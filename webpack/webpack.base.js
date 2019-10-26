@@ -4,14 +4,15 @@ const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const webpack = require('webpack');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
-
+const _version = new Date().getTime();
 module.exports = {
   entry: config.entry,
   output: {
-    filename: 'bundle.js',
+    filename: 'js/bundle.js',
     path: config.outPath,
     publicPath: './',
-    chunkFilename: '[name].vue.js'
+    chunkFilename: 'js/[name].'+_version+'.js',
+    library: '[name]_library'
   },
   resolve: {
     alias: {
@@ -81,14 +82,20 @@ module.exports = {
     {
       test: /\.(gif|png|jpe?g|svg|ico)$/i,
       use: [{
-        loader: 'url-loader'
+        loader: 'url-loader',
+        options:{
+          name:'/assets/[name].'+_version+'.[ext]'
+        }
       },
       ]
     },
     {
       test: /\.(woff|woff2|eot|ttf|otf)$/,   // 处理字体
       use: {
-        loader: 'file-loader'
+        loader: 'file-loader',
+        options:{
+          name:'/assets/[name].'+_version+'.[ext]'
+        }
       }
     }
     ]
@@ -116,6 +123,8 @@ module.exports = {
     }),
     new AddAssetHtmlPlugin({
       filepath: path.resolve(__dirname, './vendor/vue.library.js'),
+      outputPath:'js',
+      publicPath:'./js'
     })
   ]
 }

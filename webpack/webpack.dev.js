@@ -28,7 +28,10 @@ let webpackDevConfig = {
     new webpack.HotModuleReplacementPlugin(),
     new FriendlyErrorsPlugin({
       compilationSuccessInfo: {
-        messages: [chalk.cyan.bold('Your application is running here: ') + chalk.greenBright.bold(`http://${config.devServer}:${config.port}/`)]
+        messages: [
+          chalk.cyan.bold('Your application is running here: ') + chalk.greenBright.bold(`http://${config.devServer}:${config.port}/`),
+          chalk.cyan.bold('Your application is running here: ') + chalk.greenBright.bold(`http://localhost:${config.port}/`)
+      ]
       }
     }),
     new ProgressBarPlugin(

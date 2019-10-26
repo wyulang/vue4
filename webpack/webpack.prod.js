@@ -33,8 +33,8 @@ const webpackProdConfig = {
   plugins: [
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: `[name].${_version}.css`,
-      chunkFilename: `[name].${_version}.css`,
+      filename: `css/[name].${_version}.css`,
+      chunkFilename: `css/[name].${_version}.css`,
     }),
     new ProgressBarPlugin(
       {
