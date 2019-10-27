@@ -42,7 +42,7 @@ export default {
         lock: true,
         text: "下载中...",
         spinner: "el-icon-loading",
-        background: "rgba(255, 255 255, 0.3)"
+        background: "rgba(0, 0, 0, 0.2)"
       });
       api
         .post(
