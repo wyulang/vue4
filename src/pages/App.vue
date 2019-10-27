@@ -1,5 +1,5 @@
 <template>
-  <router-view></router-view>
+  <router-view class="wi-1200"></router-view>
 </template>
 <style lang="less">
 @import url('~@css/pc.less');
@@ -13,6 +13,10 @@
 }
 .fc-a0cfff{
   color: #d5eaff;
+}
+
+.wi-1200{
+  min-width: 1200px;
 }
 
 .table{
