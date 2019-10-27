@@ -1,6 +1,6 @@
 <template>
   <div class="w-all">
-    <div class="flex w-all pt10 pb10 fs-12">
+    <div class="flex w-all pb10 fs-12">
       <div v-for="(item, index) in dianList" :key="index" class="flex sha-6 mr10 fd-c">
         <div class="pt10 centent fs-16">{{item.customerName}}</div>
         <div class="flex pt10 pl10 pr10 pb10">
@@ -25,8 +25,7 @@
         </div>
       </div>
     </div>
-    <div class="w-all pl10 pr10 flex pt15 pb15 ai-c jc-s">
-      <span class="mr20">任务列表</span>
+    <div class="w-all pl10 sha-6 mb10 pr10 flex pt15 pb15 ai-c jc-s">
       <div class="flex-line">
         <div class="flex-line ai-c mr10">
           <span class="mr10">开始时间</span>
@@ -55,11 +54,12 @@
       <el-button @click="setFileList()" size="small" type="primary">搜索</el-button>
     </div>
 
-    <div class="w-all bt-b">
-      <div v-for="(item, index) in list" :key="index" class="w-all flex ai-c h-60 bb-a">
-        <div class="w-80 centent">
-          <img v-if="onFileType(item.fileName)=='image'" class="h-40 w-30" :src="item.fileUrl" alt />
-          <i v-else class="icon iconfont fs-40 c-aaa" :class="onFileType(item.fileName)"></i>
+    <div class="w-all">
+      <div v-for="(item, index) in list" :key="index" class="w-all flex ai-c h-40 bb-e">
+        <div class="w-60 centent">
+          <!-- <img  class="h-40 w-30" :src="item.fileUrl" alt /> -->
+          <span v-if="onFileType(item.fileName)=='image'" class="iconfont fs-28 fc-999 icontupian"></span>
+          <i v-else class="icon iconfont fs-30 fc-999" :class="onFileType(item.fileName)"></i>
         </div>
         <div class="flex-1">{{item.fileName}}</div>
         <div class="wb-20">上传时间：{{item.createDate | date('YYYY-MM-DD hh:mm:ss')}}</div>
@@ -157,7 +157,7 @@ export default {
         xls: ["xls", "xlsx"],
         word: ["doc", "docx"],
         image: ["png", "jpg", "jpeg", "gif", "bmp"],
-        vedio: ["3gp", "flv", "rmvb", "avi", "wmv", "mpeg4"],
+        video: ["3gp", "flv", "rmvb", "avi", "wmv", "mpeg4"],
         zip: ["zip", "rar", "7z", "cab"]
       },
       query: {

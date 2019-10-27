@@ -14,21 +14,25 @@ class webapi extends baseApi {
       env = "me"
     } else if (url.indexOf('172') > 0) {
       env = "inte"
+    } else if (url.indexOf('index.html#') > 0) {
+      env = "inte"
     }
     return env;
   }
+
+  prod = `http://${window.location.host}`;
 
   // ftp = {
   //   // me: 'http://localhost:8080/',
   //   me: 'http://172.18.0.11:8018/',
   //   inte: 'http://172.18.0.11:8018/',
-  //   prod: 'http://123.157.108.226:8018/',
+  //   prod: prod,
   // };
   ftp = {
     // me: 'http://localhost:8080/',
     me: 'http://118.24.198.193:8080/',
     inte: 'http://118.24.198.193:8080/',
-    prod: 'http://118.24.198.193:8080/',
+    prod: this.prod,
   };
 
   getDomainApi(type) {

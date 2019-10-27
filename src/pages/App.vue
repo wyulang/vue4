@@ -5,11 +5,14 @@
 @import url('~@css/pc.less');
 @import url('~element-ui/lib/theme-chalk/index.css');
 .bg-bc{
-  background-color: #00b38a;
+  background-color: #409eff;
   color: #fff;
 }
 .bg-fc{
-  color: #00b38a;
+  color: #409eff;
+}
+.fc-a0cfff{
+  color: #d5eaff;
 }
 
 .table{

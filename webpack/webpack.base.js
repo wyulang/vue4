@@ -84,7 +84,8 @@ module.exports = {
       use: [{
         loader: 'url-loader',
         options:{
-          name:'/assets/[name].'+_version+'.[ext]'
+          name:'assets/[name].'+_version+'.[ext]',
+          limit:5000
         }
       },
       ]
@@ -94,7 +95,8 @@ module.exports = {
       use: {
         loader: 'file-loader',
         options:{
-          name:'/assets/[name].'+_version+'.[ext]'
+          name:'./assets/[name].'+_version+'.[ext]',
+          publicPath:'../'
         }
       }
     }

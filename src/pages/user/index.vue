@@ -1,13 +1,13 @@
 <template>
   <div class="h-all w-all auto">
     <div class="w-all hi-all flex">
-      <div class="w-200 menu-bg">
-        <div class="w-all bg-bc pt20 pb20">
-          <div class="pb20 centent flex ai-c jc-c fs-18">
-            <span class="iconfont fs-20 iconiconfontmyfill"></span>
+      <div class="w-200 menu-bgs sha-right">
+        <div class="w-all bg-bc fc-a0cfff pt10 pb20">
+          <div class="pb13 centent fc-a0cfff flex ai-c jc-c fs-16">
+            <span class="iconfont fs-20 iconiconfontmyfill mr6"></span>
             <span>{{this.storage("userinfo").username}}</span>
           </div>
-          <div @click="toUrl('index')" class="flex fd-c pt20 menu-line ai-c jc-c hand">
+          <div @click="toUrl('index')" class="flex fd-c pt20 menu-lines ai-c jc-c hand">
             <span class="iconfont fs-50 iconzhuye1"></span>
             <span>首页</span>
           </div>
@@ -58,11 +58,11 @@ export default {
 </script>
 
 <style lang="less">
-.menu-bg {
-  background-color: #4dcaad;
+.menu-bgs {
+  background-color: #a0cfff;
 }
-.menu-line {
-  border-top: 1px solid #369780;
+.menu-lines {
+  border-top: 1px solid #3a8fcc;
 }
 .uploads {
   padding: 10px;
