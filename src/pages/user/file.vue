@@ -2,7 +2,7 @@
   <div class="w-all">
     <div class="flex sha-b pp10 mt10">文件列表</div>
 
-    <div class="w-all mt10">
+    <div ref="files" class="w-all mt10">
       <el-tree :default-expanded-keys="[0,1]" :data="list" node-key="id" class="sha-b">
         <div class="w-all ai-c bb-fe flex mt3" slot-scope="{ node, data }">
           <div class="flex-1 ml10">
@@ -19,7 +19,7 @@
           </div>
           <div class="flex">
             <span v-if="data.file" class="w-100 mr20">
-              <el-button type="text" size="mini" @click="() => dowloadFile(data)">下载</el-button>
+              <el-button type="text" size="mini" @click="() => dowloadFile(data)" :loading="data.isLoad">下载</el-button>
             </span>
           </div>
         </div>
@@ -42,7 +42,7 @@ export default {
         lock: true,
         text: "下载中...",
         spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
+        background: "rgba(255, 255 255, 0.3)"
       });
       api
         .post(
@@ -90,6 +90,7 @@ export default {
       if (obj && obj.length) {
         obj.forEach((v, index) => {
           v.children = JSON.parse(JSON.stringify(v.ftpFile));
+          v.isLoad=false;
           if (b) {
             v.id = index;
           }

@@ -1,7 +1,7 @@
 <template>
   <div class="h-all w-all auto">
     <div class="w-all hi-all flex">
-      <div class="w-200 menu-bgs sha-right">
+      <div class="w-200 wi-200 menu-bgs sha-right">
         <div class="w-all bg-bc fc-a0cfff pt10 pb20">
           <div class="pb13 centent fc-a0cfff flex ai-c jc-c fs-16">
             <span class="iconfont fs-20 iconiconfontmyfill mr6"></span>
