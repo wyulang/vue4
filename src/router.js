@@ -89,6 +89,15 @@ const routers = [
 					index: 0,
 					title: "用户登录"
 				},
+			},
+			{
+				path: '/manage/download',
+				name: "manage-download",
+				component: () => import( /* webpackChunkName: "upload" */'./pages/manage/download.vue'),
+				meta: {
+					index: 0,
+					title: "用户登录"
+				},
 			}
 		]
 	}

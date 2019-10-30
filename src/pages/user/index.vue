@@ -32,11 +32,12 @@
   </div>
 </template>
 <script>
+import api from "../../store/api.js";
 export default {
   data() {
     return {
-      user:this.storage('userinfo')
-    }
+      user: this.storage("userinfo")
+    };
   },
   methods: {
     toUrl(type) {
@@ -50,8 +51,12 @@ export default {
       }
     },
     loginout() {
-      localStorage.clear();
-      this.$router.push({ name: "login" });
+      api.get("upload-admin/sys/logout", {}).then(res => {
+        if (res.code == 2000) {
+          localStorage.clear();
+          this.$router.push({ name: "login" });
+        }
+      });
     }
   }
 };

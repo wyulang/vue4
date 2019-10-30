@@ -5,10 +5,20 @@
       <div class="contents">
         <div class="content-body">
           <section class="lefts">
-            <div class="titles flex ai-c"><span class="iconfont iconiconfontmyfill fs-21 mr10"></span>{{storage('userinfo').loginName}}</div>
+            <div class="titles flex ai-c">
+              <span class="iconfont iconiconfontmyfill fs-21 mr10"></span>
+              {{storage('userinfo').loginName}}
+            </div>
             <div class="navs">
-              <div :class="{'active':navActive==item.index}" v-for="(item, index) in menu" :key="index" @click="toMenu(item)" class="navs-item">
-                <i :class="item.icon" class="icon iconfont"></i><span class="w-100 ml10">{{item.name}}</span>
+              <div
+                :class="{'active':navActive==item.index}"
+                v-for="(item, index) in menu"
+                :key="index"
+                @click="toMenu(item)"
+                class="navs-item"
+              >
+                <i :class="item.icon" class="icon iconfont"></i>
+                <span class="w-100 ml10">{{item.name}}</span>
               </div>
             </div>
           </section>
@@ -22,6 +32,7 @@
 </template>
 <script>
 import { mapActions } from "vuex";
+import api from "../../store/api.js";
 // import canvas from '../../assets/coaves.js';
 export default {
   data() {
@@ -30,24 +41,36 @@ export default {
       navType: 0,
       navActive: 0,
       menu: [
-        { name: '用户管理', path: 'manage-custom', icon: 'icon-user6', index: 0 },
-        { name: '站点设置', path: 'manage-net', icon: 'icon-icon_setting', index: 1 },
-        // { name: '上传统计', path: 'manage-custom', icon: 'icon-user6', index: 2 },
+        {
+          name: "用户管理",
+          path: "manage-custom",
+          icon: "icon-user6",
+          index: 0
+        },
+        {
+          name: "站点设置",
+          path: "manage-net",
+          icon: "icon-icon_setting",
+          index: 1
+        },
+        { name: '下载统计', path: 'manage-download', icon: 'icon-user6', index: 2 },
         // { name: '字典数据', path: 'manage-diction', icon: 'icon-dingdan', index: 4 },
-        { name: '退出登录', path: 'clear', icon: 'icon-tuichu2', index: 5 },
+        { name: "退出登录", path: "clear", icon: "icon-tuichu2", index: 5 }
       ]
-    }
+    };
   },
   methods: {
     goindex() {
-      this.$router.push({ name: 'index' })
+      this.$router.push({ name: "index" });
     },
     toMenu(item) {
-      if (item.path == 'clear') {
-        localStorage.clear();
-        setTimeout(() => {
-          this.$router.push({ name: 'login' })
-        }, 200);
+      if (item.path == "clear") {
+        api.get("upload-admin/sys/logout", {}).then(res => {
+          if (res.code == 2000) {
+            localStorage.clear();
+            this.$router.push({ name: "login" });
+          }
+        });
         return;
       }
       this.navActive = item.index;
@@ -55,15 +78,15 @@ export default {
     }
   },
   created() {
-    if (!this.storage('userinfo')) {
-      this.$router.push({ name: 'login' })
+    if (!this.storage("userinfo")) {
+      this.$router.push({ name: "login" });
     }
     // this.navActive=this.menu.filter(v=>{return v.path==this.$route.name})[0].index;
   },
   mounted() {
     // canvas("starts", 230, 1000, 60, 2, 50000, 0.5);
-  },
-}
+  }
+};
 </script>
 <style lang="less">
 .manages {
