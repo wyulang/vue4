@@ -23,7 +23,13 @@ const [TARGET, clientItem] = [process.env.npm_lifecycle_event, process.argv[2]];
 
 const vueLoader = {
   dev: "vue-style-loader",
-  build: MiniCssExtractPlugin.loader,
+  build: {
+    loader: MiniCssExtractPlugin.loader,
+    options: {
+      publicPath: '../',
+      hmr: TARGET == 'build', // 仅dev环境启用HMR功能
+    }
+  },
   dll: MiniCssExtractPlugin.loader,
 };
 
