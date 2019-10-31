@@ -103,9 +103,16 @@ export default {
   },
   methods: {
     initData() {
+      const loading = this.$loading({
+        lock: true,
+        text: "loading...",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
       api
         .get("upload-admin/sys/userList", { role: this.user.role })
         .then(res => {
+          loading.close();
           if (res.code == 2000) {
             this.list = res.data;
           }

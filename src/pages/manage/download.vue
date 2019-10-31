@@ -7,14 +7,10 @@
             <td class="w-10">
               <el-checkbox></el-checkbox>
             </td>
-            <td>昵称</td>
+            <td>文件名</td>
             <td>用户名</td>
-            <td>注册时间</td>
-            <td>上次登录时间</td>
-            <td>上次登录IP</td>
-            <td>登录次数</td>
-            <td>上传次数</td>
-            <td>操作</td>
+            <td>登录名</td>
+            <td>下载时间</td>
           </tr>
         </thead>
         <tbody>
@@ -22,17 +18,10 @@
             <td class="w-10">
               <el-checkbox></el-checkbox>
             </td>
-            <td>{{item.loginName}}</td>
+            <td>{{item.fileName}}</td>
             <td>{{item.username}}</td>
-            <td>{{item.registerTime}}</td>
-            <td>{{item.lastLoginTime||'-'}}</td>
-            <td>{{item.lastLoginIp||'-'}}</td>
-            <td>{{item.loginNum}}次</td>
-            <td>{{item.uploadNum}}次</td>
-            <td>
-              <span @click="btnDelete(item.username,item.id)" class="hand mr10">删除</span>
-              <span @click="getItem(item)" class="hand">编辑</span>
-            </td>
+            <td>{{item.loginName}}</td>
+            <td>{{item.createDateStr}}</td>
           </tr>
         </tbody>
       </table>
@@ -40,14 +29,25 @@
   </div>
 </template>
 <script>
+import api from "../../store/api.js";
 export default {
   data() {
     return {
       list: []
     };
   },
+  methods:{
+      initData(){
+          api.post('upload-admin/sys/downloadRecords',{}).then(res=>{
+              if(res.code==2000){
+                  this.list=res.data;
+              }
+          })
+      }
+  },
   created() {
     //upload-amdin/sys/deleteFile
+    this.initData();
   }
 };
 </script>
