@@ -14,7 +14,7 @@ class webapi extends baseApi {
       env = "me"
     } else if (url.indexOf('6001') > 0) {
       env = "inte"
-    } 
+    }
     return env;
   }
 
@@ -35,6 +35,14 @@ class webapi extends baseApi {
 
   getDomainApi(type) {
     return this.env('ftp')
+  }
+
+  setWithCredentials() {
+    return true
+  }
+
+  setToken() {
+    return { token: this.storage('userinfo').token }
   }
 
   //请求体BUG提示
