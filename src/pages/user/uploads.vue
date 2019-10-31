@@ -58,8 +58,8 @@
       <div v-for="(item, index) in list" :key="index" class="w-all flex ai-c h-40 bb-e">
         <div class="w-60 centent">
           <!-- <img  class="h-40 w-30" :src="item.fileUrl" alt /> -->
-          <span v-if="onFileType(item.fileName)=='image'" class="iconfont fs-28 fc-999 icontupian"></span>
-          <i v-else class="icon iconfont fs-30 fc-999" :class="onFileType(item.fileName)"></i>
+          <span v-if="onFileType(item.fileName)=='image'" class="iconfont fs-24 fc-999 icontupian"></span>
+          <i v-else class="icon iconfont fs-28 fc-999" :class="onFileType(item.fileName)"></i>
         </div>
         <div class="flex-1">{{item.fileName}}</div>
         <div class="wb-20">上传时间：{{item.createDate | date('YYYY-MM-DD hh:mm:ss')}}</div>
@@ -224,7 +224,7 @@ export default {
 
     onFileType(type) {
       let types = {
-        video: "iconvideo",
+        video: "iconmeiti",
         zip: "iconRAR",
         word: "iconword",
         xls: "iconexclxlsxlsx",
