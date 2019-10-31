@@ -5,6 +5,9 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const webpack = require('webpack');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const _version = new Date().getTime();
+
+// happypack
+
 module.exports = {
   entry: config.entry,
   output: {
