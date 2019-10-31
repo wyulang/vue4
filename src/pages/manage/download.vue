@@ -25,6 +25,16 @@
           </tr>
         </tbody>
       </table>
+      <div class="flex jc-e">
+        <el-pagination
+          class="fr mt20 mb20"
+          @current-change="setFileList"
+          :current-page.sync="query.page"
+          background
+          layout="prev, pager, next"
+          :total="query.total"
+        ></el-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -33,17 +43,27 @@ import api from "../../store/api.js";
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      query: {
+        size: 10,
+        page: 1,
+        total: 0
+      }
     };
   },
-  methods:{
-      initData(){
-          api.post('upload-admin/sys/downloadRecords',{}).then(res=>{
-              if(res.code==2000){
-                  this.list=res.data;
-              }
-          })
-      }
+  methods: {
+    initData() {
+      api.post("upload-admin/sys/downloadRecords", this.query).then(res => {
+        if (res.code == 2000) {
+          this.list = res.data.list;
+          this.query.total=res.data.total;
+        }
+      });
+    },
+    setFileList(page) {
+      this.query.page = page;
+      this.initData();
+    }
   },
   created() {
     //upload-amdin/sys/deleteFile
