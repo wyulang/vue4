@@ -105,7 +105,7 @@
               class="iconfont hand icondelete fs-18 mr10"
             ></span>
           </div>
-          <div style="height:450px;">
+          <div @click="isCodeUpload" style="height:450px;">
             <uploader
               @file-success="onFileSuccess"
               :file-status-text="statusText"
@@ -209,6 +209,14 @@ export default {
     };
   },
   methods: {
+    isCodeUpload(e){
+      if(!this.ftpCode.length){
+        this.$message.error("请先选择上传平台");
+         e.stopPropagation();
+         window.event.returnValue = false
+        return;
+      }
+    },
     deleteFiles(item) {
       this.$confirm("确定要删除吗！").then(res => {
         api
