@@ -153,6 +153,7 @@ export default {
           ftpCode: "",
           userId: ""
         },
+        withCredentials:true,
         testMethod: "POST",
         maxChunkRetries: 3, //最大自动失败重试上传次数
         testChunks: false, //是否开启服务器分片校验
