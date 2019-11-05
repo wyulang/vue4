@@ -21,7 +21,7 @@ new Vue({
 });
 
 Vue.filter('date',function(value,fmt){
-  return date.transform(value)
+  return date.format(value)
 })
 
 Vue.filter('fileSize',function(value,fmt){

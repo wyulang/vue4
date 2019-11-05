@@ -58,6 +58,7 @@
     "vue-print-nb": "^1.4.0",
     "vue-qriously": "^1.1.1",
     "vue-seamless-scroll": "^1.1.17",
+    "vue-simple-uploader": "^0.7.2",
     "vue-template-compiler": "^2.6.10",
     "vuebar": "0.0.20",
     "vuex": "^3.1.1",
@@ -71,7 +72,6 @@
   },
   "dependencies": {
     "core-js": "^3.3.3",
-    "vue-router": "^3.0.7",
-    "vue-simple-uploader": "^0.7.2"
+    "vue-router": "^3.0.7"
   }
 }

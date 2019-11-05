@@ -29,23 +29,11 @@
       <div class="flex-line">
         <div class="flex-line ai-c mr10">
           <span class="mr10">开始时间</span>
-          <el-date-picker
-            v-model="query.startTime"
-            size="small"
-            value-format="yyyy-MM-dd"
-            type="date"
-            placeholder="选择日期"
-          ></el-date-picker>
+          <el-date-picker v-model="query.startTime" size="small" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>
         </div>
         <div class="flex-line ai-c mr10">
           <span class="mr10">结束时间</span>
-          <el-date-picker
-            v-model="query.endTime"
-            size="small"
-            value-format="yyyy-MM-dd"
-            type="date"
-            placeholder="选择日期"
-          ></el-date-picker>
+          <el-date-picker v-model="query.endTime" size="small" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>
         </div>
         <div class="flex-line ai-c mr10">
           <el-input placeholder="请输入内容" size="small" v-model="query.fileName" clearable></el-input>
@@ -72,52 +60,21 @@
         </div>
       </div>
 
-      <el-pagination
-        class="fr mt20 mb20"
-        @current-change="setFileList()"
-        :current-page.sync="query.pageNo"
-        background
-        layout="prev, pager, next"
-        :total="count"
-      ></el-pagination>
+      <el-pagination class="fr mt20 mb20" @current-change="setFileList()" :current-page.sync="query.pageNo" background layout="prev, pager, next" :total="count"></el-pagination>
     </div>
     <div v-show="isUpload" class="fixed at0 ab0 al0 ar0">
       <div class="w-all h-all flex ai-c jc-c">
         <div class="w-600 flex fd-c sha-all pp5 ra-5 bc-fff">
           <div class="flex ai-c jc-b">
             <span class="ml10">上传平台：</span>
-            <el-select
-              class="flex-1 ml15 mr15"
-              multiple
-              size="mini"
-              v-model="ftpCode"
-              placeholder="请选择上传平台"
-            >
-              <el-option
-                v-for="item in ftplist"
-                :key="item.value"
-                :label="item.customerName"
-                :value="item.ftpCode"
-              ></el-option>
+            <el-select class="flex-1 ml15 mr15" multiple size="mini" v-model="ftpCode" placeholder="请选择上传平台">
+              <el-option v-for="item in ftplist" :key="item.value" :label="item.customerName" :value="item.ftpCode"></el-option>
             </el-select>
-            <span
-              @click="$store.commit('setUpload',false)"
-              class="iconfont hand icondelete fs-18 mr10"
-            ></span>
+            <span @click="$store.commit('setUpload',false)" class="iconfont hand icondelete fs-18 mr10"></span>
           </div>
           <div @click="isCodeUpload" style="height:450px;">
-            <uploader
-              @file-success="onFileSuccess"
-              :file-status-text="statusText"
-              @file-added="onFileAdded"
-              ref="uploader"
-              :options="options"
-              class="flex fd-c w-all h-all mt10 pl10 pr10 uploads"
-            >
-              <uploader-drop
-                style="border: 1px dashed #d9d9d9;"
-                class="br-5 flex jc-c c-aaa fd-c hand mb10 pb10"
-              >
+            <uploader @file-success="onFileSuccess" :file-status-text="statusText" @file-added="onFileAdded" ref="uploader" :options="options" class="flex fd-c w-all h-all mt10 pl10 pr10 uploads">
+              <uploader-drop style="border: 1px dashed #d9d9d9;" class="br-5 flex jc-c c-aaa fd-c hand mb10 pb10">
                 <uploader-btn class="flexupload" style="border:0;">
                   <div class="flex jc-c">
                     <i style="font-size:60px;" class="iconfont iconicon--"></i>
@@ -189,6 +146,9 @@ export default {
         chunked: true,
         chunkSize: "2048000", //分块大小
         duplicate: true,
+        headers: {
+          token: this.storage("userinfo").token
+        },
         query: {
           ftpCode: "",
           userId: ""
@@ -197,7 +157,7 @@ export default {
         maxChunkRetries: 3, //最大自动失败重试上传次数
         testChunks: false, //是否开启服务器分片校验
         // 服务器分片校验函数，秒传及断点续传基础
-        checkChunkUploadedByResponse: function(chunk, message) {
+        checkChunkUploadedByResponse: function (chunk, message) {
           let objMessage = JSON.parse(message);
           if (objMessage.skipUpload) {
             return true;
@@ -209,11 +169,11 @@ export default {
     };
   },
   methods: {
-    isCodeUpload(e){
-      if(!this.ftpCode.length){
+    isCodeUpload(e) {
+      if (!this.ftpCode.length) {
         this.$message.error("请先选择上传平台");
-         e.stopPropagation();
-         window.event.returnValue = false
+        e.stopPropagation();
+        window.event.returnValue = false
         return;
       }
     },
