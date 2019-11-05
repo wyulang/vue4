@@ -52,7 +52,10 @@ class webapi extends baseApi {
   //请求体BUG提示
   getMessage(err, type) {
     if (type == 'then') {
-      // Message.error(err.msg || this.errorMess);
+      if (err.code && err.code == "4405") {
+        Message.error(err.message || this.errorMess);
+        window.location.href = "#/"
+      }
     } else if (type == 'catch') {
       // Message.error(err.msg || this.errorMess);
     }
