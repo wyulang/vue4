@@ -68,12 +68,12 @@ export default {
   },
   methods: {
     initData() {
-      api.get('upload-admin/sys/dictLis', { dictType: ''}).then(res => {
+      api.get('sys/dictLis', { dictType: ''}).then(res => {
 
       })
     },
     btnAdd() {
-      api.post('upload-admin/sys/addUser', this.user).then(res => {
+      api.post('sys/addUser', this.user).then(res => {
 
       })
     }

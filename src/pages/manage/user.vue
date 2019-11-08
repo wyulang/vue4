@@ -97,13 +97,13 @@ export default {
   },
   methods: {
     initData() {
-      api.get("upload-admin/sys/userList", { role: 1 }).then(res => {
+      api.get("sys/userList", { role: 1 }).then(res => {
         this.list = res;
       });
     },
     btnDelete(name, id) {
       api
-        .get("upload-admin/sys/deleteUser", { username: name, id: id })
+        .get("sys/deleteUser", { username: name, id: id })
         .then(res => {
           if (res.code == 2000) {
             this.$message.success("删除成功！");
@@ -114,7 +114,7 @@ export default {
     },
     btnAdd() {
       if (!this.user.id) {
-        api.post("upload-admin/sys/addUser", this.user).then(res => {
+        api.post("sys/addUser", this.user).then(res => {
           if (res.code == 2000) {
             this.$message.success("新增成功！");
             this.isModel = false;
@@ -122,7 +122,7 @@ export default {
           }
         });
       } else {
-        api.post("upload-admin/sys/editUser", this.user).then(res => {
+        api.post("sys/editUser", this.user).then(res => {
           if (res.code == 2000) {
             this.$message.success("修改成功！");
             this.isModel = false;

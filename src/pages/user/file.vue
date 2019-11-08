@@ -30,7 +30,9 @@
           </div>
           <div class="flex">
             <span v-if="data.file" class="w-100 mr20">
+<!--
               <el-button v-if="data.isVideo" type="text" size="mini" @click="() => toHref(data,1)" :loading="data.isLoad">在线播放</el-button>
+-->
               <el-button type="text" size="mini" @click="() => dowloadFile(data,2)" :loading="data.isLoad">下载</el-button>
             </span>
           </div>
@@ -73,7 +75,7 @@ export default {
   methods: {
     toHref(data) {
       this.video.isShow = true;
-      this.video.src = data.href;
+      this.video.src = "http://127.0.0.1:8080/sys/view?id=77792279e0c44c05bb1104610fbfca18";
     },
     dowloadFile(data, type) {
       const loading = this.$loading({
@@ -84,7 +86,7 @@ export default {
       });
       api
         .post(
-          "upload-admin/sys/downloadFile",
+          "sys/downloadFile",
           {
             ftpPath: data.pathName,
             fileName: data.fileName,
@@ -106,7 +108,7 @@ export default {
             downloadElement.click(); //点击下载
             document.body.removeChild(downloadElement); //下载完成移除元素
             window.URL.revokeObjectURL(href); //释放掉blob对象
-            api.post('upload-admin/sys/downloadRecords', { userId: this.user.id });
+            // api.post('sys/downloadRecords', { userId: this.user.id });
           } else {
             this.video.isShow = true;
             this.video.src = href;
@@ -208,7 +210,7 @@ export default {
         background: "rgba(0, 0, 0, 0.7)"
       });
       api
-        .get("upload-admin/sys/findFileList", { userId: this.user.id })
+        .get("sys/findFileList", { userId: this.user.id })
         .then(res => {
           loading.close();
           if (res.code == 2000) {

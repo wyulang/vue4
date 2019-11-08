@@ -17,6 +17,15 @@ const routers = [
 		}
 	},
 	{
+		path: '/Info',
+		name: "Info",
+		component: () => import('./pages/Info.vue'),
+		meta: {
+			index: 0,
+			title: "服务器信息查看"
+		}
+	},
+	{
 		path: '/user',
 		name: "user",
 		component: () => import('./pages/user/index.vue'),

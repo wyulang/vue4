@@ -131,7 +131,7 @@ export default {
       count: 0,
       isFile: true,
       urls: "",
-      baseUrl: "upload-admin/sys/uploadBigToFtp",
+      baseUrl: "sys/uploadBigToFtp",
       endList: [],
       ftpCode: "",
       statusText: {
@@ -181,7 +181,7 @@ export default {
     deleteFiles(item) {
       this.$confirm("确定要删除吗！").then(res => {
         api
-          .post("upload-admin/sys/deleteFile", {
+          .post("sys/deleteFile", {
             id: item.id,
             userId: this.query.userId
           })
@@ -218,7 +218,7 @@ export default {
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)"
       });
-      api.get("upload-admin/sys/fileList", this.query).then(res => {
+      api.get("sys/fileList", this.query).then(res => {
         loading.close();
         this.list = res.data.fileList;
         this.count = res.data.totalSize;
@@ -249,7 +249,7 @@ export default {
 
       if (data.data.isMerge) {
         api
-          .post("upload-admin/sys/merge", {
+          .post("sys/merge", {
             ftpCode: this.ftpCode.toString(),
             fileName: file.name,
             userId: this.storage("userinfo").id,
@@ -302,13 +302,13 @@ export default {
     this.isShow = this.$route.query.s;
     this.setFileList();
     api
-      .get("upload-admin/sys/getCustomerList", {
+      .get("sys/getCustomerList", {
         userId: this.storage("userinfo").id
       })
       .then(res => {
         this.dianList = res.data;
       });
-    api.get("upload-admin/sys/ftpCustomerList", {}).then(res => {
+    api.get("sys/ftpCustomerList", {}).then(res => {
       this.ftplist = res.data;
     });
   }
