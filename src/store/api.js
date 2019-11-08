@@ -34,6 +34,7 @@ class webapi extends baseApi {
   };
 
   getDomainApi(type) {
+    let url=this.env('ftp');
     return this.env('ftp')
   }
 
@@ -55,7 +56,7 @@ class webapi extends baseApi {
       if (err.code && err.code == "4405") {
         Message.error(err.message || this.errorMess);
         window.location.href = "#/"
-      }else if (err.code && err.code == "7001"){
+      } else if (err.code && err.code == "7001") {
         Message.error(err.message || this.errorMess);
         window.location.href = "#/Info"
       }
