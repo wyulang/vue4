@@ -1,11 +1,11 @@
-<template>
+<template xmlns:v-clipboard="http://www.w3.org/1999/xhtml">
   <div class="w-all h-all fc-1d7eb8 fs-18 rel">
     <canvas id="stars"></canvas>
     <div class="abs at0 ab0 al0 ar0">
       <div class="w-all h-all flex ai-c jc-c">
         <div class="flex-line fd-c">
            <div class="flex ai-c mb20">
-               <span class="">您的证书无效，请核查服务器是否取得授权或联系管理员处理！</span>
+               <span class="font-b80520">您的证书无效，请核查服务器是否取得授权或联系管理员处理！</span>
            </div>
           <div class="flex ai-c mb20">
             <span class="w-200">服务器IP地址：</span>
@@ -23,7 +23,11 @@
             <span class="w-200">服务器主板序列号：</span>
             <input class="canvass" type="text" readonly v-model="data.mainBoardSerial">
           </div>
-          <div class="flex jc-s"><div @click="$router.push('/')" class="fc-1d7eb8 hand w-150 center btnReturn">返回登录>></div></div>
+          <div class="flex jc-s">
+              <div @click="$router.push('/')" class="fc-1d7eb8 hand w-150 center btnReturn">返回登录>></div>
+              <!--<div @click="()=>copy()" class="fc-1d7eb8 hand w-150 center btnReturn">下载</div>-->
+              <button type="button" v-clipboard:copy="JSON.stringify(data)" v-clipboard:success="onCopy" v-clipboard:error="onErr" >复制</button>
+          </div>
         </div>
       </div>
     </div>
@@ -32,6 +36,7 @@
 
 <script>
 import api from "../store/api.js";
+
 export default {
   data() {
     return {
@@ -52,6 +57,12 @@ export default {
       });
     }
   },
+    onCopy(){
+        this.$message.success("内容已复制到剪切板！")
+    },
+    onErr(){
+        this.$message.error("抱歉，复制失败！")
+    },
   mounted() {
     var canvas = document.getElementById('stars'),
       ctx = canvas.getContext('2d'),
@@ -164,6 +175,9 @@ export default {
 <style scoped>
 .fc-1d7eb8 {
   color: #1d7eb8;
+}
+.font-b80520 {
+    color: #b80520;
 }
 .btnReturn {
   padding: 10px 20px;
