@@ -54,7 +54,7 @@ export default {
             this.$router.push({ name: "user-upload" });
           }
         } else if (res.code == 7001) {
-          this.$router.push({ name: "Info" });
+          // this.$router.push({ name: "Info" });
         }else {
           this.$message.error("用户名或密码错误");
         }

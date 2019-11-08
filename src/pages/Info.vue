@@ -4,6 +4,9 @@
     <div class="abs at0 ab0 al0 ar0">
       <div class="w-all h-all flex ai-c jc-c">
         <div class="flex-line fd-c">
+           <div class="flex ai-c mb20">
+               <span class="">您的证书无效，请核查服务器是否取得授权或联系管理员处理！</span>
+           </div>
           <div class="flex ai-c mb20">
             <span class="w-200">服务器IP地址：</span>
             <input class="canvass" type="text" readonly v-model="data.ipAddress">
