@@ -51,7 +51,7 @@ export default {
       }
     },
     loginout() {
-      api.get("upload-admin/sys/logout", {}).then(res => {
+      api.get("sys/logout", {}).then(res => {
         if (res.code == 2000) {
           localStorage.clear();
           this.$router.push({ name: "login" });

@@ -44,7 +44,7 @@ export default {
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)"
       });
-      api.post("upload-admin/sys/login", this.user).then(res => {
+      api.post("sys/login", this.user).then(res => {
         loading.close();
         if (res.code == 2000) {
           this.storage("userinfo", res.data);
@@ -53,7 +53,9 @@ export default {
           } else {
             this.$router.push({ name: "user-upload" });
           }
-        } else {
+        } else if (res.code == 7001) {
+          this.$router.push({ name: "Info" });
+        }else {
           this.$message.error("用户名或密码错误");
         }
       });

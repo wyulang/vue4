@@ -97,14 +97,14 @@ export default {
   },
   methods: {
     initData() {
-      api.get("upload-admin/sys/ftpCustomerList").then(res => {
+      api.get("sys/ftpCustomerList").then(res => {
         if(res.code==2000){
           this.list = res.data;
         }
       });
     },
     btnAdd() {
-      api.post("upload-admin/sys/customerFtpInfo", this.user).then(res => {
+      api.post("sys/customerFtpInfo", this.user).then(res => {
         if (res.code == 2000) {
           this.initData();
           this.$message.success("新增成功");
@@ -120,11 +120,11 @@ export default {
     },
     modifyBtn() {
       if (this.user.id) {
-        api.post("upload-admin/sys/editFtpInfo", this.user).then(res => {
+        api.post("sys/editFtpInfo", this.user).then(res => {
             this.initData();
             this.$message.success("修改成功");
             this.isModel = false;
-         
+
         });
       } else {
         this.btnAdd();
