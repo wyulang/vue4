@@ -30,7 +30,7 @@
           </div>
           <div class="flex">
             <span v-if="data.file" class="w-100 mr20">
-              <el-button v-if="data.isVideo" type="text" size="mini" @click="() => toHref(data,1)" :loading="data.isLoad">在线播放</el-button>
+              <el-button v-if="data.isVideo" type="text" size="mini" @click="() => dowloadFile(data,1)" :loading="data.isLoad">在线播放</el-button>
               <el-button type="text" size="mini" @click="() => dowloadFile(data,2)" :loading="data.isLoad">下载</el-button>
             </span>
           </div>
@@ -71,10 +71,6 @@ export default {
     };
   },
   methods: {
-    toHref(data) {
-      this.video.isShow = true;
-      this.video.src = data.href;
-    },
     dowloadFile(data, type) {
       const loading = this.$loading({
         lock: true,
