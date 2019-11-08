@@ -12,7 +12,7 @@ class webapi extends baseApi {
     let url = window.location.href;
     if (url.indexOf('localhost') > 0) {
       env = "me"
-    } else if (url.indexOf('6001') > 0) {
+    } else if (url.indexOf('6006') > 0) {
       env = "inte"
     }
     return env;

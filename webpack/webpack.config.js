@@ -39,7 +39,7 @@ module.exports = {
   publicPath: '',
   outPath: path.resolve(__dirname, '../dist'),
   devServer: getIPAdress() || 'localhost',
-  port: '6001',
+  port: '6006',
   isFile: isFile,
   getIPAdress: getIPAdress,
   vueLoader: vueLoader[TARGET],

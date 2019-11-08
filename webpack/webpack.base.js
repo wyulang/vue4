@@ -115,6 +115,7 @@ module.exports = {
       filename: `index.html`,
       template: config.root + '/src/index.html',
       title: 'wyulang',
+      favicon:path.resolve('favicon.ico'),
       prod: true,
       hash: true,
       minify: {
