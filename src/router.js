@@ -17,9 +17,9 @@ const routers = [
 		}
 	},
 	{
-		path: '/Info',
-		name: "Info",
-		component: () => import('./pages/Info.vue'),
+		path: '/info',
+		name: "info",
+		component: () => import('./pages/info.vue'),
 		meta: {
 			index: 0,
 			title: "服务器信息查看"
