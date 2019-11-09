@@ -20,12 +20,6 @@ class webapi extends baseApi {
 
   prod = `http://${window.location.host}/`;
 
-  // ftp = {
-  //   // me: 'http://localhost:8080/',
-  //   me: 'http://172.18.0.11:8018/',
-  //   inte: 'http://172.18.0.11:8018/',
-  //   prod: prod,
-  // };
   ftp = {
     me: 'http://localhost:8080/',
     // me: 'http://47.100.197.169:8080/',
@@ -34,7 +28,6 @@ class webapi extends baseApi {
   };
 
   getDomainApi(type) {
-    let url=this.env('ftp');
     return this.env('ftp')
   }
 
@@ -58,7 +51,7 @@ class webapi extends baseApi {
         window.location.href = "#/"
       } else if (err.code && err.code == "7001") {
         Message.error(err.message || this.errorMess);
-        window.location.href = "#/Info"
+        window.location.href = "#/info"
       }
     } else if (type == 'catch') {
       // Message.error(err.msg || this.errorMess);
