@@ -5,7 +5,7 @@
         <div class="w-all bg-bc fc-fff pt10 pb20">
           <div class="pb13 centent fc-a0cfff flex ai-c jc-c fs-16">
             <span class="iconfont fs-20 iconiconfontmyfill mr6"></span>
-            <span>{{this.storage("userinfo").username}}</span>
+            <a @click="modifyPassword()"><span>{{this.storage("userinfo").username}}</span></a>
           </div>
           <div @click="toUrl('index')" class="flex fd-c pt20 menu-lines ai-c jc-c hand">
             <span class="iconfont fs-50 iconzhuye1"></span>
@@ -13,11 +13,11 @@
           </div>
           <div @click="toUrl('upload')" class="flex fd-c ai-c jc-c mt20 hand">
             <span class="iconfont fs-35 iconshangchuan"></span>
-            <span>文件上传</span>
+            <span>外宣推送</span>
           </div>
           <div v-if="user.role==1" @click="toUrl('file')" class="flex fd-c ai-c jc-c mt20 hand">
             <span class="iconfont fs-38 iconwenjian"></span>
-            <span>我的文件</span>
+            <span>编辑下载</span>
           </div>
           <div @click="loginout()" class="flex fd-c ai-c jc-c mt30 hand">
             <i class="iconfont fs-35 icontuichu"></i>
@@ -29,15 +29,84 @@
         <router-view></router-view>
       </div>
     </div>
+    <el-dialog
+            title="修改密码"
+            :center="true"
+            width="400px"
+            :append-to-body="true"
+            :visible.sync="isModel"
+    >
+      <!--<div class="w-all">
+        <div class="flex ai-c mb10">
+          <span class="w-90" prop="pass">原密码</span>
+          <el-input v-model="ruleForm.pass" placeholder="请输入原密码" type="password"></el-input>
+        </div>
+        <div class="flex ai-c mb10">
+          <span class="w-90" prop="newpass">新密码</span>
+          <el-input v-model="ruleForm.newpass" placeholder="请输入新密码" type="password"></el-input>
+        </div>
+        <div class="flex ai-c mb10">
+          <span class="w-90" prop="checknewpass">重复新密码</span>
+          <el-input v-model="ruleForm.checknewpass" placeholder="请再次输入新密码" type="password"></el-input>
+        </div>
+        <span slot="footer" class="w-all flex jc-e">
+          <el-button @click="isModel = false">取 消</el-button>
+          <el-button type="primary" @click="modifyBtn">确 定</el-button>
+        </span>
+      </div>-->
+      <el-form :inline="true" :model="ruleForm" ref="ruleForm" :rules="rules" label-width="120px" size="medium">
+        <el-row class="text-center">
+          <el-col :span="24">
+            <el-form-item label="旧密码" prop="oldPsd">
+              <el-input type="password" v-model="ruleForm.oldPsd" placeholder="请输入旧密码"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="新密码" prop="newPsd">
+              <el-input type="password" v-model="ruleForm.newPsd" placeholder="请输入新密码"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="确认新密码" prop="checkNewPsd">
+              <el-input type="password" v-model="ruleForm.checkNewPsd" placeholder="请再次输入新密码"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24" :offset="15">
+            <el-form-item size="small" class="el-icon--left">
+              <el-button  @click="isModel = false">取消</el-button>
+              <el-button type="primary" @click="modifyBtn">确定修改</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
 import api from "../../store/api.js";
 export default {
   data() {
+      var validatePass2 = (rule, value, callback) => {
+          if (value === "") {
+              callback(new Error("请再次输入密码"));
+          } else if (value !== this.ruleForm.newPsd) {
+              callback(new Error("两次输入密码不一致!"));
+          } else {
+              callback();
+          }
+      };
     return {
-      user: this.storage("userinfo")
-    };
+      user: this.storage("userinfo"),
+      isModel: false,
+      rules:{
+          oldPsd: [ { required: true, message: "请输入密码" }],
+          newPsd: [ { required: true, message: "请输入新密码" } ],
+          checkNewPsd: [ { required: true, validator: validatePass2, trigger: "blur" } ]
+      },
+      ruleForm:{}
+    }
   },
   methods: {
     toUrl(type) {
@@ -57,7 +126,35 @@ export default {
           this.$router.push({ name: "login" });
         }
       });
-    }
+    },
+    modifyPassword(){
+        this.isModel = true;
+        this.ruleForm = {};
+        this.ruleForm.id = this.user.id;
+    },
+    modifyBtn() {
+        if (this.ruleForm.newPsd.length < 5) {
+            this.$message.error("密码至少为六位!");
+            return;
+        }
+        if(this.ruleForm.newPsd == this.ruleForm.oldPsd){
+            this.$message.error("新密码不能与原密码一样!");
+            return;
+        }
+        if(this.ruleForm.newPsd != this.ruleForm.checkNewPsd){
+            this.$message.error("两次输入密码不一致!");
+            return;
+        }
+        api.post("sys/modifyPassword", this.ruleForm).then(res => {
+            if(res.code == 2000){
+                this.$message.success("修改密码成功");
+                this.isModel = false;
+                // this.initData();
+            }else{
+                this.$message.error(res.message);
+            }
+          });
+      }
   }
 };
 </script>
