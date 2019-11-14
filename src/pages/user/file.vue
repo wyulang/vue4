@@ -21,7 +21,7 @@
 
     <div class="w-all mt10">
       <el-tree ref="ftree" :default-expanded-keys="[0,1]" :data="list" node-key="id" class="sha-b">
-        <div class="w-all ai-c bb-fe flex mt3" slot-scope="{ node, data }">
+        <div class="w-all ai-c rel bb-fe flex mt3" slot-scope="{ node, data }">
           <div class="flex-1 ml10">
             <span :class="{'iconfile1':data.file,'iconwenjianjia fc-fc6':!data.file}" class="iconfont"></span>
             <span class="pl10">{{data.fileName}}</span>
@@ -33,6 +33,9 @@
               <el-button v-if="data.isVideo" type="text" size="mini" @click="() => dowloadFile(data,1)" :loading="data.isLoad">在线播放</el-button>
               <el-button type="text" size="mini" @click="() => dowloadFile(data,2)" :loading="data.isLoad">下载</el-button>
             </span>
+          </div>
+          <div v-if="data.isDown" class="abs at18 ab0 al20 center pl16 pr100 w-all">
+            <el-progress class="mr50" :percentage="data.pross"></el-progress>
           </div>
         </div>
       </el-tree>
@@ -72,24 +75,24 @@ export default {
   },
   methods: {
     dowloadFile(data, type) {
-      const loading = this.$loading({
-        lock: true,
-        text: type == 1 ? "加载中..." : "下载中...",
-        spinner: "el-icon-loading fs-30",
-        background: "rgba(0, 0, 0, 0.2)"
-      });
-      api
-        .post(
+      data.isDown=true;
+      api.post(
           "sys/downloadFile",
           {
             ftpPath: data.pathName,
             fileName: data.fileName,
             userId: this.user.id
           },
-          { responseType: "blob" }
+          {
+            responseType: "blob",
+            download: res => {
+              let complete = (res.loaded / data.fileSize || 0);
+              data.pross = complete.toFixed(2);
+            }
+          }
         )
         .then(res => {
-          loading.close();
+          data.isDown=false;
           const fileName = data.fileName;
           const _res = res;
           let blob = new Blob([_res]);
@@ -223,6 +226,8 @@ export default {
           v.py = py(v.fileName)[0].toLocaleLowerCase();
           v.date = new Date(v.createTime).getTime();
           v.isLoad = false;
+          v.pross = 0;
+          v.isDown = false;
           v.isVideo = this.metas.includes((v.fileName.split('.')[v.fileName.split('.').length - 1]).toLocaleLowerCase())
           if (b) {
             v.id = index;
