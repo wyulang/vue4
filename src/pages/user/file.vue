@@ -87,7 +87,7 @@ export default {
           {
             responseType: "blob",
             download: res => {
-              let complete = (res.loaded / data.fileSize || 0);
+              let complete = (res.loaded / data.fileSize || 0)*100;
               data.pross = complete.toFixed(2);
             }
           }
