@@ -81,6 +81,15 @@ const routers = [
 					title: "用户登录"
 				},
 			},
+            {
+                path: '/manage/site',
+                name: "manage-site",
+                component: () => import( /* webpackChunkName: "upload" */'./pages/manage/set-site.vue'),
+                meta: {
+                    index: 0,
+                    title: "用户登录"
+                },
+            },
 			{
 				path: '/manage/admin',
 				name: "manage-admin",

@@ -48,14 +48,16 @@ export default {
           index: 0
         },
         {
-          name: "站点设置",
+          name: "外宣站点设置",
           path: "manage-net",
           icon: "icon-icon_setting",
           index: 1
         },
-        { name: '下载统计', path: 'manage-download', icon: 'icon-user6', index: 2 },
+          { name: '编辑下载站点设置', path: 'manage-site', icon: 'icon-user6', index: 2 },
+          { name: '下载统计', path: 'manage-download', icon: 'icon-user6', index: 4 },
+
         // { name: '字典数据', path: 'manage-diction', icon: 'icon-dingdan', index: 4 },
-        { name: "退出登录", path: "clear", icon: "icon-tuichu2", index: 5 }
+          { name: "退出登录", path: "clear", icon: "icon-tuichu2", index: 5 }
       ]
     };
   },

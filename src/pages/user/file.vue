@@ -15,8 +15,9 @@
       <el-date-picker value-format="yyyy-MM-dd" size="small" v-model="query.date" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
       </el-date-picker>
       <span class="wi-60 ml10">文件名称：</span>
-      <el-input size="small" class="w-150" v-model="query.name" placeholder="请输入内容"></el-input>
+      <el-input size="small" class="w-150" v-model="query.name" placeholder="请输入内容" @keydown.enter.native="searchEnter"></el-input>
       <el-button size="small" @click="btnSerch" class="ml20" type="primary">查询</el-button>
+      <el-button size="small" @click="resetSerch" class="ml20" type="primary" >重置</el-button>
     </div>
 
     <div class="w-all mt10">
@@ -30,7 +31,7 @@
           </div>
           <div class="flex">
             <span v-if="data.file" class="w-100 mr20">
-              <el-button v-if="data.isVideo" type="text" size="mini" @click="() => dowloadFile(data,1)" :loading="data.isLoad">在线播放</el-button>
+              <!--<el-button v-if="data.isVideo" type="text" size="mini" @click="() => dowloadFile(data,1)" :loading="data.isLoad">在线播放</el-button>-->
               <el-button type="text" size="mini" @click="() => dowloadFile(data,2)" :loading="data.isLoad">下载</el-button>
             </span>
           </div>
@@ -239,6 +240,19 @@ export default {
           }
         });
       }
+    },
+    searchEnter(e){
+          var keyCode = window.event?e.keyCode:e.which;
+          if(keyCode == 13){
+              this.btnSerch();
+          }
+    },
+    resetSerch(){
+         this.query.timesort=0;
+         this.query.filesort=0;
+         this.query.date='';
+         this.query.name='';
+         this.list = this.baseList;
     }
   },
   created() {
