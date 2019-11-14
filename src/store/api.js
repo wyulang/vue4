@@ -27,8 +27,8 @@ class webapi extends baseApi {
   //   prod: prod,
   // };
   ftp = {
-    // me: 'http://localhost:8080/',
-    me: 'http://47.100.197.169:8080/',
+    me: 'http://localhost:8080/',
+    // me: 'http://47.100.197.169:8080/',
     // me: 'http://118.24.198.193:8080/',
     inte: 'http://118.24.198.193:8080/',
     prod: this.prod,
