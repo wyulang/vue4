@@ -52,9 +52,9 @@
         <div class="flex-1">{{item.fileName}}</div>
         <div class="wb-20">上传时间：{{item.createDate | date('YYYY-MM-DD hh:mm:ss')}}</div>
         <div class="wb-10">文件大小：{{item.fileSize | fileSize}}</div>
-        <div class="w-100 center">
+        <!--<div class="w-100 center">
           <span @click="download(item.fileName,item.fileUrl)" class="fc-a hand">查看文件</span>
-        </div>
+        </div>-->
         <div v-if="query.role==1" class="w-70 fc-btn hand">
           <span @click="deleteFiles(item)">删除</span>
         </div>

@@ -15,13 +15,14 @@
       <el-date-picker value-format="yyyy-MM-dd" size="small" v-model="query.date" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
       </el-date-picker>
       <span class="wi-60 ml10">文件名称：</span>
-      <el-input size="small" class="w-150" v-model="query.name" placeholder="请输入内容"></el-input>
+      <el-input size="small" class="w-150" v-model="query.name" placeholder="请输入内容" @keydown.enter.native="searchEnter"></el-input>
       <el-button size="small" @click="btnSerch" class="ml20" type="primary">查询</el-button>
+      <el-button size="small" @click="resetSerch" class="ml20" type="primary" >重置</el-button>
     </div>
 
     <div class="w-all mt10">
       <el-tree ref="ftree" :default-expanded-keys="[0,1]" :data="list" node-key="id" class="sha-b">
-        <div class="w-all ai-c bb-fe flex mt3" slot-scope="{ node, data }">
+        <div class="w-all ai-c rel bb-fe flex mt3" slot-scope="{ node, data }">
           <div class="flex-1 ml10">
             <span :class="{'iconfile1':data.file,'iconwenjianjia fc-fc6':!data.file}" class="iconfont"></span>
             <span class="pl10">{{data.fileName}}</span>
@@ -30,9 +31,12 @@
           </div>
           <div class="flex">
             <span v-if="data.file" class="w-100 mr20">
-              <el-button v-if="data.isVideo" type="text" size="mini" @click="() => dowloadFile(data,1)" :loading="data.isLoad">在线播放</el-button>
+              <!--<el-button v-if="data.isVideo" type="text" size="mini" @click="() => dowloadFile(data,1)" :loading="data.isLoad">在线播放</el-button>-->
               <el-button type="text" size="mini" @click="() => dowloadFile(data,2)" :loading="data.isLoad">下载</el-button>
             </span>
+          </div>
+          <div v-if="data.isDown" class="abs at18 ab0 al20 center pl16 pr100 w-all">
+            <el-progress class="mr50" :percentage="data.pross"></el-progress>
           </div>
         </div>
       </el-tree>
@@ -72,24 +76,24 @@ export default {
   },
   methods: {
     dowloadFile(data, type) {
-      const loading = this.$loading({
-        lock: true,
-        text: type == 1 ? "加载中..." : "下载中...",
-        spinner: "el-icon-loading fs-30",
-        background: "rgba(0, 0, 0, 0.2)"
-      });
-      api
-        .post(
+      data.isDown=true;
+      api.post(
           "sys/downloadFile",
           {
             ftpPath: data.pathName,
             fileName: data.fileName,
             userId: this.user.id
           },
-          { responseType: "blob" }
+          {
+            responseType: "blob",
+            download: res => {
+              let complete = (res.loaded / data.fileSize || 0)*100;
+              data.pross = complete.toFixed(2);
+            }
+          }
         )
         .then(res => {
-          loading.close();
+          data.isDown=false;
           const fileName = data.fileName;
           const _res = res;
           let blob = new Blob([_res]);
@@ -223,6 +227,8 @@ export default {
           v.py = py(v.fileName)[0].toLocaleLowerCase();
           v.date = new Date(v.createTime).getTime();
           v.isLoad = false;
+          v.pross = 0;
+          v.isDown = false;
           v.isVideo = this.metas.includes((v.fileName.split('.')[v.fileName.split('.').length - 1]).toLocaleLowerCase())
           if (b) {
             v.id = index;
@@ -234,6 +240,19 @@ export default {
           }
         });
       }
+    },
+    searchEnter(e){
+          var keyCode = window.event?e.keyCode:e.which;
+          if(keyCode == 13){
+              this.btnSerch();
+          }
+    },
+    resetSerch(){
+         this.query.timesort=0;
+         this.query.filesort=0;
+         this.query.date='';
+         this.query.name='';
+         this.list = this.baseList;
     }
   },
   created() {

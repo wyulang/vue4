@@ -2,9 +2,9 @@
   <div class="flex fd-c h-all w-all">
     <div class="pl10 flex jc-b mt10 ai-c">
       <el-radio-group @change="initData()" size="small" v-model="user.role">
-        <el-radio-button label="0">管理员</el-radio-button>
+        <!--<el-radio-button label="0">管理员</el-radio-button>-->
         <el-radio-button label="1">用户管理员</el-radio-button>
-        <el-radio-button label="2">普通用户</el-radio-button>
+        <!--<el-radio-button label="2">普通用户</el-radio-button>-->
       </el-radio-group>
       <div class="h-45 bb flex">
         <div class="flex-1 flex ai-e btn-upload pb6">
@@ -110,7 +110,7 @@ export default {
         background: "rgba(0, 0, 0, 0.7)"
       });
       api
-        .get("sys/userList", { role: this.user.role })
+        .get("sys/userList", { role: 1 })
         .then(res => {
           loading.close();
           if (res.code == 2000) {
