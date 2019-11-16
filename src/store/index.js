@@ -7,10 +7,7 @@ Vue.use(VueClipboard)
 export default new Vuex.Store({
   state: {
     isUpload: false,
-    isMenu: {
-      show: false,
-      title: "离校统计"
-    }
+    downloadFile: [{uid:'111',pross:0}]
   },
   actions: {
   },
@@ -20,6 +17,16 @@ export default new Vuex.Store({
     },
     setUpload(state, value) {
       state.isUpload = value
+    },
+    setDownLoad(state, val) {
+      state.downloadFile = val;
+    },
+    setDownLoadPross(state, val) {
+      let prss = state.downloadFile.find(v => { return v.uid = val.uid })
+      if (prss) {
+        prss.pross = val.pross;
+        console.log(val,prss)
+      }
     }
   }
 })
