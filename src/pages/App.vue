@@ -4,6 +4,9 @@
 <style lang="less">
 @import url('~@css/pc.less');
 @import url('~element-ui/lib/theme-chalk/index.css');
+body{
+  overflow: hidden;
+}
 .bg-bc{
   background-color: #409eff;
   color: #fff;

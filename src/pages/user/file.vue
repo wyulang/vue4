@@ -101,7 +101,11 @@ export default {
       }
       // this.downlist.push(JSON.parse(JSON.stringify(data)));
       // this.$store.commit("setDownLoad", this.downlist);
+      data.uptime = new Date().getTime();
       this.$store.state.downloadFile.push(data);
+      this.$store.state.downloadFile.sort((a, b) => {
+        return b.uptime - a.uptime;
+      });
       api
         .post(
           "sys/downloadFile",
@@ -123,7 +127,8 @@ export default {
           }
         )
         .then(res => {
-          data.isDown = false;
+          // data.isDown = false;
+          data.pross = 100;
           // this.$store.state.downloadFile=this.$store.state.downloadFile.filter(v=>{return v.pross<100});
           const fileName = data.fileName;
           const _res = res;

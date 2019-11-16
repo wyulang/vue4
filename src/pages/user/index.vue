@@ -117,7 +117,7 @@ export default {
     return {
       user: this.storage("userinfo"),
       isModel: false,
-      isFile: false,
+      isFile: true,
       rules: {
         oldPsd: [{ required: true, message: "请输入密码" }],
         newPsd: [{ required: true, message: "请输入新密码" }],
