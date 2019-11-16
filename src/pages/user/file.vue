@@ -34,9 +34,6 @@
               <el-button type="text" size="mini" @click="() => dowloadFile(data,2)" :loading="data.isLoad">下载</el-button>
             </span>
           </div>
-          <div v-if="data.isDown" class="abs at18 ab0 al20 center pl16 pr100 w-all">
-            <el-progress class="mr50" :percentage="data.pross"></el-progress>
-          </div>
         </div>
       </el-tree>
     </div>
