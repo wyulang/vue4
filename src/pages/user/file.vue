@@ -3,53 +3,18 @@
     <div class="flex ai-c sha-b pp10 mt10">
       <span class="wi-60">时间排序：</span>
       <div class="flex fc-aaa fd-c">
-        <span
-          @click="setQuery(0,1)"
-          :class="{'file-active':query.timesort==1,'fc-ccc':query.timesort==2}"
-          class="iconfont hand iconpaixushang"
-        ></span>
-        <span
-          @click="setQuery(0,2)"
-          style="margin-top:-5px"
-          :class="{'file-active':query.timesort==2,'fc-ccc':query.timesort==2}"
-          class="iconfont hand iconpaixu-"
-        ></span>
+        <span @click="setQuery(0,1)" :class="{'file-active':query.timesort==1,'fc-ccc':query.timesort==2}" class="iconfont hand iconpaixushang"></span>
+        <span @click="setQuery(0,2)" style="margin-top:-5px" :class="{'file-active':query.timesort==2,'fc-ccc':query.timesort==2}" class="iconfont hand iconpaixu-"></span>
       </div>
       <span class="wi-60 ml20">文件名排序：</span>
       <div class="flex fc-aaa fd-c">
-        <span
-          @click="setQuery(1,1)"
-          :class="{'file-active':query.filesort==1,'fc-ccc':query.filesort==2}"
-          class="iconfont hand iconpaixushang"
-        ></span>
-        <span
-          @click="setQuery(1,2)"
-          :class="{'file-active':query.filesort==2,'fc-ccc':query.filesort==2}"
-          style="margin-top:-5px"
-          class="iconfont hand iconpaixu-"
-        ></span>
+        <span @click="setQuery(1,1)" :class="{'file-active':query.filesort==1,'fc-ccc':query.filesort==2}" class="iconfont hand iconpaixushang"></span>
+        <span @click="setQuery(1,2)" :class="{'file-active':query.filesort==2,'fc-ccc':query.filesort==2}" style="margin-top:-5px" class="iconfont hand iconpaixu-"></span>
       </div>
       <span class="wi-60 ml10">上传时间：</span>
-      <el-date-picker
-        value-format="yyyy-MM-dd"
-        size="small"
-        v-model="query.date"
-        type="daterange"
-        align="right"
-        unlink-panels
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        :picker-options="pickerOptions"
-      ></el-date-picker>
+      <el-date-picker value-format="yyyy-MM-dd" size="small" v-model="query.date" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions"></el-date-picker>
       <span class="wi-60 ml10">文件名称：</span>
-      <el-input
-        size="small"
-        class="w-150"
-        v-model="query.name"
-        placeholder="请输入内容"
-        @keydown.enter.native="searchEnter"
-      ></el-input>
+      <el-input size="small" class="w-150" v-model="query.name" placeholder="请输入内容" @keydown.enter.native="searchEnter"></el-input>
       <el-button size="small" @click="btnSerch" class="ml20" type="primary">查询</el-button>
       <el-button size="small" @click="resetSerch" class="ml20" type="primary">重置</el-button>
     </div>
@@ -58,10 +23,7 @@
       <el-tree ref="ftree" :default-expanded-keys="[0,1]" :data="list" node-key="id" class="sha-b">
         <div class="w-all ai-c rel bb-fe flex mt3" slot-scope="{ node, data }">
           <div class="flex-1 ml10">
-            <span
-              :class="{'iconfile1':data.file,'iconwenjianjia fc-fc6':!data.file}"
-              class="iconfont"
-            ></span>
+            <span :class="{'iconfile1':data.file,'iconwenjianjia fc-fc6':!data.file}" class="iconfont"></span>
             <span class="pl10">{{data.fileName}}</span>
             <span class="pl30 fc-999" v-if="data.createTime">{{data.createTime |date('YYYY-MM-DD')}}</span>
             <span class="ml30 fc-999" v-if="data.fileSize">{{data.fileSize | fileSize}}</span>
@@ -69,12 +31,7 @@
           <div class="flex">
             <span v-if="data.file" class="w-100 mr20">
               <!--<el-button v-if="data.isVideo" type="text" size="mini" @click="() => dowloadFile(data,1)" :loading="data.isLoad">在线播放</el-button>-->
-              <el-button
-                type="text"
-                size="mini"
-                @click="() => dowloadFile(data,2)"
-                :loading="data.isLoad"
-              >下载</el-button>
+              <el-button type="text" size="mini" @click="() => dowloadFile(data,2)" :loading="data.isLoad">下载</el-button>
             </span>
           </div>
           <div v-if="data.isDown" class="abs at18 ab0 al20 center pl16 pr100 w-all">
@@ -83,16 +40,11 @@
         </div>
       </el-tree>
     </div>
+    <div class="h-20"></div>
     <section v-if="video.isShow" class="videoDig">
       <div @click="video.isShow=false;" class="dig-close"></div>
       <div class="dig-body">
-        <video
-          ref="video"
-          class="outline"
-          :src="video.src"
-          id="homeVideo"
-          controls="controls"
-        >您的浏览器不支持 video 标签。</video>
+        <video ref="video" class="outline" :src="video.src" id="homeVideo" controls="controls">您的浏览器不支持 video 标签。</video>
       </div>
     </section>
   </div>
@@ -140,7 +92,7 @@ export default {
   methods: {
     dowloadFile(data, type) {
       let isDowns = this.$store.state.downloadFile.find(v => {
-        return (v.uid == data.uid);
+        return v.uid == data.uid;
       });
       if (isDowns) {
         if (isDowns.pross < 100) {
@@ -166,7 +118,10 @@ export default {
             download: res => {
               let complete = (res.loaded / data.fileSize || 0) * 100;
               data.pross = complete.toFixed(2);
-              this.$store.commit('setDownLoadPross',{uid:'111',pross:complete.toFixed(2)})
+              this.$store.commit("setDownLoadPross", {
+                uid: "111",
+                pross: complete.toFixed(2)
+              });
             }
           }
         )
@@ -312,7 +267,7 @@ export default {
       api.get("sys/findFileList", { userId: this.user.id }).then(res => {
         loading.close();
         if (res.code == 2000) {
-          this.list = res.data[0].ftpFile[0].ftpFile;
+          this.list = res.data[0].ftpFile;
           this.recursion(this.list, true);
           setTimeout(() => {
             this.baseList = JSON.parse(JSON.stringify(this.list));
