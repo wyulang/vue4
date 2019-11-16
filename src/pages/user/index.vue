@@ -1,5 +1,5 @@
 <template>
-  <div class="h-all w-all hidden">
+  <div class="h-all w-all auto">
     <div class="w-all hi-all flex">
       <div class="w-200 wi-200 menu-bgs sha-right">
         <div class="w-all bg-bc fc-fff pt10 pb20">
@@ -31,13 +31,7 @@
         <router-view></router-view>
       </div>
     </div>
-    <el-dialog
-      title="修改密码"
-      :center="true"
-      width="400px"
-      :append-to-body="true"
-      :visible.sync="isModel"
-    >
+    <el-dialog title="修改密码" :center="true" width="400px" :append-to-body="true" :visible.sync="isModel">
       <!--<div class="w-all">
         <div class="flex ai-c mb10">
           <span class="w-90" prop="pass">原密码</span>
@@ -56,14 +50,7 @@
           <el-button type="primary" @click="modifyBtn">确 定</el-button>
         </span>
       </div>-->
-      <el-form
-        :inline="true"
-        :model="ruleForm"
-        ref="ruleForm"
-        :rules="rules"
-        label-width="120px"
-        size="medium"
-      >
+      <el-form :inline="true" :model="ruleForm" ref="ruleForm" :rules="rules" label-width="120px" size="medium">
         <el-row class="text-center">
           <el-col :span="24">
             <el-form-item label="旧密码" prop="oldPsd">
@@ -91,15 +78,21 @@
         </el-row>
       </el-form>
     </el-dialog>
-    <div v-if="downloadFile.length>1" class="w-350 fixed ab0 ar0 sha-all bc-fff pp10">
-      <div style="max-height: 300px" class="w-all auto">
-        <div v-show="item.uid!='111'" v-for="(item, index) in downloadFile" :key="index" class="w-all bb-e mt3 pt3 flex fd-c">
-        <div class="fs-13 flex ai-c">
-          <span class="iconfont iconLC_icon_download_fill fs-12"></span>
-          <span class="ml10">{{item.fileName}}</span>
-        </div>
-        <el-progress class="w-all flex ai-c" :percentage="item.pross"></el-progress>
+    <div :class="{'w-400':isFile,'':!isFile}" v-if="downloadFile.length>1" class=" fixed ab0 zi-100 ar0 sha-all bc-fff pp10">
+      <div @click="isFile=!isFile" class="abs zi-120 hand at-11 al-11">
+        <span :class="{'iconicon-error':isFile,'iconshouzhankaiqi':!isFile}" class="iconfont fs-17 fc-999"></span>
       </div>
+      <div v-if="!isFile">
+        <span class="iconfont fs-25 fc-999 iconxiazai"></span>
+      </div>
+      <div v-if="isFile" style="max-height: 150px" class="w-all auto">
+        <div v-show="item.uid!='111'" v-for="(item, index) in downloadFile" :key="index" class="w-all bb-e mt3 pt3 flex fd-c">
+          <div class="fs-13 flex ai-c">
+            <span class="iconfont iconLC_icon_download_fill fs-12"></span>
+            <span class="ml10">{{item.fileName}}</span>
+          </div>
+          <el-progress class="w-all flex ai-c" :percentage="item.pross"></el-progress>
+        </div>
       </div>
     </div>
   </div>
@@ -124,6 +117,7 @@ export default {
     return {
       user: this.storage("userinfo"),
       isModel: false,
+      isFile: false,
       rules: {
         oldPsd: [{ required: true, message: "请输入密码" }],
         newPsd: [{ required: true, message: "请输入新密码" }],
