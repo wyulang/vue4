@@ -3,12 +3,12 @@
     <div class="pl10 flex jc-b mt10 ai-c">
       <el-radio-group @change="initData()" size="small" v-model="user.role">
         <!--<el-radio-button label="0">管理员</el-radio-button>-->
-        <el-radio-button label="1">用户管理员</el-radio-button>
+        <el-radio-button label="1">用户管理</el-radio-button>
         <!--<el-radio-button label="2">普通用户</el-radio-button>-->
       </el-radio-group>
       <div class="h-45 bb flex">
         <div class="flex-1 flex ai-e btn-upload pb6">
-          <div @click="isModel=true;user.id=0" class="h-30 lh-25 bc-f5 btn-item">
+          <div @click="isModel=true;user={},user.id=0,isReadonly=false;" class="h-30 lh-25 bc-f5 btn-item">
             <i class="iconfont icontianjia"></i> 新增
           </div>
           <div class="h-30 lh-25 bc-f5 btn-item">
@@ -47,7 +47,7 @@
             <td>{{item.loginNum}}次</td>
             <td>{{item.uploadNum}}次</td>
             <td>
-              <span @click="btnDelete(item.username,item.id)" class="hand mr10">删除</span>
+              <span @click="deleteItem(item)" class="hand mr10">删除</span>
               <span @click="getItem(item)" class="hand">编辑</span>
             </td>
           </tr>
@@ -69,7 +69,7 @@
         </div>
         <div class="flex ai-c mb20">
           <span class="w-90">登录名：</span>
-          <el-input v-model="user.username" placeholder="请输入内容"></el-input>
+          <el-input v-model="user.username" placeholder="请输入内容" :disabled="isReadonly"></el-input>
         </div>
         <div class="flex ai-c mb20">
           <span class="w-90">密码：</span>
@@ -81,6 +81,17 @@
         </span>
       </div>
     </el-dialog>
+    <el-dialog title="删除提示"
+               :center="true"
+               width="400px"
+               :append-to-body="true"
+               :visible.sync="isConfirm">
+      <span> 您是否确定删除该用户信息?</span>
+      <span slot="footer" class="w-all flex jc-e">
+          <el-button @click="isConfirm = false">取 消</el-button>
+          <el-button type="primary" @click="btnDelete">确 定</el-button>
+        </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -89,13 +100,15 @@ export default {
   data() {
     return {
       isModel: false,
-
+      isReadonly:false,
+      isConfirm:false,
+      deleteId:"",
       list: [],
       user: {
         username: "",
         loginName: "",
         password: "",
-        role: "0",
+        role: "1",
         userId: 0,
         id: 0
       }
@@ -118,24 +131,33 @@ export default {
           }
         });
     },
-    btnDelete(name, id) {
+     deleteItem(item){
+        this.isConfirm = true;
+        this.deleteId = item.id;
+    },
+    btnDelete() {
       api
-        .get("sys/deleteUser", { username: name, id: id })
+          .get("sys/deleteUser", { id: this.deleteId })
         .then(res => {
           if (res.code == 2000) {
             this.$message.success("删除成功！");
-            this.isModel = false;
+            this.isConfirm = false;
             this.initData();
+          }else {
+              this.$message.error(res.magenta);
           }
         });
     },
     btnAdd() {
+      this.user.role = "1";
       if (!this.user.id) {
         api.post("sys/addUser", this.user).then(res => {
           if (res.code == 2000) {
             this.$message.success("新增成功！");
             this.isModel = false;
             this.initData();
+          }else {
+              this.$message.warning(res.message);
           }
         });
       } else {
@@ -153,7 +175,9 @@ export default {
       this.user.loginName = item.loginName;
       this.user.password = item.password;
       this.user.id = item.id;
+      this.user.role = "1";
       this.isModel = true;
+      this.isReadonly=true;
     }
   },
   created() {
