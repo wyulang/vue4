@@ -41,7 +41,7 @@
             </td>
             <td>{{item.loginName}}</td>
             <td>{{item.username}}</td>
-            <td>{{item.registerTime}}</td>
+            <td>{{item.createDate}}</td>
             <td>{{item.lastLoginTime||'-'}}</td>
             <td>{{item.lastLoginIp||'-'}}</td>
             <td>{{item.loginNum}}次</td>
@@ -53,6 +53,19 @@
           </tr>
         </tbody>
       </table>
+      <div class="flex jc-e">
+        <el-pagination
+                class="fr mt20 mb20"
+                @current-change="handleCurrentChange"
+                @size-change="handleSizeChange"
+                :current-page="query.page"
+                :page-size="query.pageSize"
+                background
+                layout="total,sizes,prev, pager, next"
+                :page-sizes="[10, 20]"
+                :total="query.total"
+        ></el-pagination>
+      </div>
     </div>
 
     <el-dialog
@@ -65,15 +78,15 @@
       <div class="w-all">
         <div class="flex ai-c mb20">
           <span class="w-90">昵称：</span>
-          <el-input v-model="user.loginName" placeholder="请输入内容"></el-input>
+          <el-input v-model="user.loginName" placeholder="请输入昵称"></el-input>
         </div>
         <div class="flex ai-c mb20">
           <span class="w-90">登录名：</span>
-          <el-input v-model="user.username" placeholder="请输入内容" :disabled="isReadonly"></el-input>
+          <el-input v-model="user.username" placeholder="请输入登录名,长度至少为3位" :disabled="isReadonly"></el-input>
         </div>
         <div class="flex ai-c mb20">
           <span class="w-90">密码：</span>
-          <el-input v-model="user.password" placeholder="请输入内容"></el-input>
+          <el-input v-model="user.password" placeholder="请输入密码,长度至少为6位"></el-input>
         </div>
         <span slot="footer" class="w-all flex jc-e">
           <el-button @click="isModel = false">取 消</el-button>
@@ -104,6 +117,12 @@ export default {
       isConfirm:false,
       deleteId:"",
       list: [],
+      query: {
+          pageSize: 10,
+          page: 1,
+          total: 0,
+          role: "1"
+        },
       user: {
         username: "",
         loginName: "",
@@ -123,11 +142,12 @@ export default {
         background: "rgba(0, 0, 0, 0.7)"
       });
       api
-        .get("sys/userList", { role: 1 })
+        .post("sys/userList", this.query)
         .then(res => {
           loading.close();
           if (res.code == 2000) {
-            this.list = res.data;
+             this.list = res.data.list;
+             this.query.total=res.data.total;
           }
         });
     },
@@ -149,6 +169,18 @@ export default {
         });
     },
     btnAdd() {
+       if(!this.user.loginName.length){
+            this.$message.error("请输入昵称");
+            return;
+        }
+      if(!this.user.password || this.user.password.length<5){
+          this.$message.error("请输入密码，且长度至少为6位");
+          return;
+      }
+      if(!this.user.username.length||this.user.username.length<2){
+          this.$message.error("请输入登录名，且长度至少为3位");
+          return;
+        }
       this.user.role = "1";
       if (!this.user.id) {
         api.post("sys/addUser", this.user).then(res => {
@@ -178,6 +210,15 @@ export default {
       this.user.role = "1";
       this.isModel = true;
       this.isReadonly=true;
+    },
+    handleSizeChange(val) {
+        this.query.pageSize = val;
+        // console.log(`每页 ${val} 条`);
+        this.handleCurrentChange(1);
+      },
+      handleCurrentChange(val){
+        this.query.page = val;
+        this.initData();
     }
   },
   created() {

@@ -1,6 +1,6 @@
 <template>
   <div class="w-all">
-    <div class="pl10 pt10 pb10">
+    <div class="pl10 pt10 pb10" >
       <table class="table">
         <thead class="sha-6">
           <tr>
@@ -32,10 +32,13 @@
       <div class="flex jc-e">
         <el-pagination
           class="fr mt20 mb20"
-          @current-change="setFileList"
-          :current-page.sync="query.page"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+          :current-page="query.page"
+          :page-size="query.pageSize"
           background
-          layout="prev, pager, next"
+          layout="total,sizes,prev, pager, next"
+          :page-sizes="[10, 20]"
           :total="query.total"
         ></el-pagination>
       </div>
@@ -57,7 +60,7 @@ export default {
     return {
       list: [],
       query: {
-        size: 10,
+        pageSize: 10,
         page: 1,
         total: 0
       },
@@ -88,10 +91,15 @@ export default {
         }
       });
     },
-    setFileList(page) {
-      this.query.page = page;
-      this.initData();
-    }
+      handleSizeChange(val) {
+          this.query.pageSize = val;
+          // console.log(`每页 ${val} 条`);
+          this.handleCurrentChange(1);
+      },
+      handleCurrentChange(val){
+          this.query.page = val;
+          this.initData();
+      }
   },
   created() {
     //upload-amdin/sys/deleteFile
