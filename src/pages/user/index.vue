@@ -21,6 +21,10 @@
             <span class="iconfont fs-38 iconwenjian"></span>
             <span>编辑下载</span>
           </div>
+          <div v-if="user.role==1" @click="toUrl('transcode')" class="flex fd-c ai-c jc-c mt20 hand">
+            <span class="iconfont fs-38 iconwenjian"></span>
+            <span>转码管理</span>
+          </div>
           <div @click="loginout()" class="flex fd-c ai-c jc-c mt30 hand">
             <i class="iconfont fs-35 icontuichu"></i>
             <span>退出登录</span>
@@ -137,6 +141,8 @@ export default {
         this.$store.commit("setUpload", true);
       } else if (type == "file") {
         this.$router.push({ name: "user-file" });
+      }else if (type == "transcode") {
+          this.$router.push({ name: "user-transcode" });
       }
     },
     loginout() {

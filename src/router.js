@@ -40,7 +40,7 @@ const routers = [
 				component: () => import( /* webpackChunkName: "upload" */'./pages/user/uploads.vue'),
 				meta: {
 					index: 0,
-					title: "用户登录"
+					title: "上传管理"
 				},
 			},
 			{
@@ -49,9 +49,18 @@ const routers = [
 				component: () => import( /* webpackChunkName: "upload" */'./pages/user/file.vue'),
 				meta: {
 					index: 0,
-					title: "用户登录"
+					title: "编辑下载"
 				},
 			},
+            {
+                path: '/user/transcode',
+                name: "user-transcode",
+                component: () => import( /* webpackChunkName: "upload" */'./pages/user/transcode.vue'),
+                meta: {
+                    index: 0,
+                    title: "转码管理"
+                },
+            },
 		]
 	},
 	{
@@ -69,7 +78,7 @@ const routers = [
 				component: () => import( /* webpackChunkName: "upload" */'./pages/manage/custom.vue'),
 				meta: {
 					index: 0,
-					title: "用户登录"
+					title: "用户管理"
 				},
 			},
 			{
@@ -78,7 +87,7 @@ const routers = [
 				component: () => import( /* webpackChunkName: "upload" */'./pages/manage/set-net.vue'),
 				meta: {
 					index: 0,
-					title: "用户登录"
+					title: "外宣站点设置"
 				},
 			},
             {
@@ -87,7 +96,7 @@ const routers = [
                 component: () => import( /* webpackChunkName: "upload" */'./pages/manage/set-site.vue'),
                 meta: {
                     index: 0,
-                    title: "用户登录"
+                    title: "编辑下载站点设置"
                 },
             },
 			{
@@ -114,7 +123,7 @@ const routers = [
 				component: () => import( /* webpackChunkName: "upload" */'./pages/manage/download.vue'),
 				meta: {
 					index: 0,
-					title: "用户登录"
+					title: "下载统计"
 				},
 			}
 		]
