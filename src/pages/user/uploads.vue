@@ -39,7 +39,7 @@
           <el-input placeholder="请输入内容" size="small" v-model="query.fileName" clearable></el-input>
         </div>
       </div>
-      <el-button @click="setFileList()" size="small" type="primary">搜索</el-button>
+      <el-button @click="initData()" size="small" type="primary">搜索</el-button>
     </div>
 
     <div class="w-all">
@@ -60,7 +60,17 @@
         </div>
       </div>
 
-      <el-pagination class="fr mt20 mb20" @current-change="setFileList()" :current-page.sync="query.pageNo" background layout="prev, pager, next" :total="count"></el-pagination>
+      <el-pagination
+              class="fr mt20 mb20"
+              @current-change="handleCurrentChange"
+              @size-change="handleSizeChange"
+              :current-page="query.pageNum"
+              :page-size="query.pageSize"
+              background
+              layout="total,sizes,prev, pager, next"
+              :page-sizes="[10, 20]"
+              :total="total">
+      </el-pagination>
     </div>
     <div v-show="isUpload" class="fixed at0 ab0 al0 ar0">
       <div class="w-all h-all flex ai-c jc-c">
@@ -122,13 +132,13 @@ export default {
         endTime: "",
         fileName: "",
         pageSize: 10,
-        pageNo: 1,
+        pageNum: 1,
         userId: this.storage("userinfo").id,
         role: this.storage("userinfo").role
       },
       list: [],
       dianList: [],
-      count: 0,
+      total: 0,
       isFile: true,
       urls: "",
       baseUrl: "sys/uploadBigToFtp",
@@ -211,7 +221,7 @@ export default {
       }
       return dal;
     },
-    setFileList() {
+    initData() {
       const loading = this.$loading({
         lock: true,
         text: "Loading",
@@ -220,9 +230,26 @@ export default {
       });
       api.get("sys/fileList", this.query).then(res => {
         loading.close();
-        this.list = res.data.fileList;
-        this.count = res.data.totalSize;
+        this.list = res.data.list;
+        this.total = res.data.total;
       });
+      api.get("sys/getCustomerList", {
+         userId: this.storage("userinfo").id
+         }).then(res => {
+              this.dianList = res.data;
+         });
+      api.get("sys/ftpCustomerList", {}).then(res => {
+        this.ftplist = res.data;
+      });
+    },
+    handleSizeChange(val) {
+        this.query.pageSize = val;
+          // console.log(`每页 ${val} 条`);
+        this.handleCurrentChange(1);
+      },
+    handleCurrentChange(val){
+        this.query.pageNum = val;
+        this.initData();
     },
     download(filename, src) {
       var element = document.createElement("a");
@@ -258,7 +285,7 @@ export default {
           .then(res => {
             if (res.code == 2000) {
               this.$message.success(file.name.concat("上传完成"));
-              this.setFileList();
+              this.initData();
               setTimeout(v => {
                 file.cancel();
               });
@@ -267,7 +294,7 @@ export default {
       }
       if (file.totalChunks <= 1) {
         this.$message.success(file.name.concat("上传完成"));
-        this.setFileList();
+        this.initData();
         setTimeout(v => {
           file.cancel();
         });
@@ -300,17 +327,7 @@ export default {
   created() {
     this.options.target = api.getDomainApi() + this.baseUrl;
     this.isShow = this.$route.query.s;
-    this.setFileList();
-    api
-      .get("sys/getCustomerList", {
-        userId: this.storage("userinfo").id
-      })
-      .then(res => {
-        this.dianList = res.data;
-      });
-    api.get("sys/ftpCustomerList", {}).then(res => {
-      this.ftplist = res.data;
-    });
+    this.initData();
   }
 };
 </script>

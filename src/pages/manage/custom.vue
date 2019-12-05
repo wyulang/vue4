@@ -58,7 +58,7 @@
                 class="fr mt20 mb20"
                 @current-change="handleCurrentChange"
                 @size-change="handleSizeChange"
-                :current-page="query.page"
+                :current-page="query.pageNum"
                 :page-size="query.pageSize"
                 background
                 layout="total,sizes,prev, pager, next"
@@ -119,7 +119,7 @@ export default {
       list: [],
       query: {
           pageSize: 10,
-          page: 1,
+          pageNum: 1,
           total: 0,
           role: "1"
         },
@@ -217,7 +217,7 @@ export default {
         this.handleCurrentChange(1);
       },
       handleCurrentChange(val){
-        this.query.page = val;
+        this.query.pageNum = val;
         this.initData();
     }
   },
