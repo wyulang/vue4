@@ -1,9 +1,38 @@
 <template>
   <div class="flex fd-c h-all w-all">
     <div class="pl10 flex jc-b mt10 ai-c">
+      <div class="w-all mt10">
+        <el-tree
+                :data="departList"
+                node-key="id"
+                default-expand-all
+                @node-click = "nodeClick"
+                :expand-on-click-node="false">
+      <span class="custom-tree-node" slot-scope="{ node, data }">
+        <span>{{ data.name }}</span>
+
+        <span>
+          <el-button
+                  type="text"
+                  size="mini"
+                  @click="() => append(data)">
+            新增
+          </el-button>
+          <!--<el-button
+                  type="text"
+                  size="mini"
+                  @click="() => remove(node, data)">
+            删除
+          </el-button>-->
+        </span>
+      </span>
+        </el-tree>
+      </div>
+    </div>
+    <div class="pl10 flex jc-b mt10 ai-c">
       <el-radio-group @change="initData()" size="small" v-model="user.role">
         <!--<el-radio-button label="0">管理员</el-radio-button>-->
-        <el-radio-button label="1">用户管理</el-radio-button>
+        <!--<el-radio-button label="1">用户管理</el-radio-button>-->
         <!--<el-radio-button label="2">普通用户</el-radio-button>-->
       </el-radio-group>
       <div class="h-45 bb flex">
@@ -105,6 +134,26 @@
           <el-button type="primary" @click="btnDelete">确 定</el-button>
         </span>
     </el-dialog>
+    <el-dialog title="新增节点"
+               :center="true"
+               width="400px"
+               :append-to-body="true"
+               :visible.sync="isAddNode">
+      <div class="w-all">
+        <div class="flex ai-c mb20">
+          <span class="w-90">部门名称：</span>
+          <el-input v-model="depart.name" placeholder="请输入部门名称"></el-input>
+        </div>
+        <div class="flex ai-c mb20">
+          <span class="w-90">部门简称：</span>
+          <el-input v-model="depart.shortName" placeholder="部门简称"></el-input>
+        </div>
+        <span slot="footer" class="w-all flex jc-e">
+          <el-button @click="isModel = false">取 消</el-button>
+          <el-button type="primary" @click="btnAddNode">确 定</el-button>
+        </span>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -121,7 +170,8 @@ export default {
           pageSize: 10,
           pageNum: 1,
           total: 0,
-          role: "1"
+          role: "1",
+          departmentId:""
         },
       user: {
         username: "",
@@ -130,7 +180,15 @@ export default {
         role: "1",
         userId: 0,
         id: 0
-      }
+      },
+     departList:[],
+     isAddNode:false,
+     nodeData:{},
+     depart:{
+       name:"",
+       shortName:"",
+       parentId:""
+     }
     };
   },
   methods: {
@@ -150,6 +208,13 @@ export default {
              this.query.total=res.data.total;
           }
         });
+        api
+            .get("sys/departmentList")
+            .then(res => {
+                if (res.code == 2000) {
+                    this.departList = res.data;
+                }
+            });
     },
      deleteItem(item){
         this.isConfirm = true;
@@ -219,6 +284,43 @@ export default {
       handleCurrentChange(val){
         this.query.pageNum = val;
         this.initData();
+    },
+    append(data){
+        this.isAddNode = true;
+        this.depart.parentId = data.id;
+        this.nodeData = data;
+
+    },
+    remove(node,data){
+
+        api.get("sys/deleteDepart",{id:data.id}).then(res => {
+            if(res.code == 2000){
+                this.$message.success("部门删除成功！");
+                const parent = node.parent;
+                const children = parent.data.children || parent.data;
+                const index = children.findIndex(d => d.id === data.id);
+                children.splice(index, 1);
+            }
+        });
+    },
+    btnAddNode(){
+        api.post("sys/saveDepart",this.depart).then(res => {
+              if(res.code == 2000){
+                  const newChild = { id: res.data.id, name: res.data.name, children: [],shortName:res.data.shortName };
+                  if (!this.nodeData.children) {
+                      this.$set(this.nodeData, 'children', []);
+                  }
+                  this.nodeData.children.push(newChild);
+                  this.isAddNode = false;
+                  this.$message.success("部门新增成功！");
+              }
+            }
+        );
+
+    },
+    nodeClick(data){
+        this.query.departmentId = data.id;
+        this.initData();
     }
   },
   created() {
@@ -276,6 +378,14 @@ export default {
         margin-right: 0;
       }
     }
+  }
+  .custom-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding-right: 8px;
   }
 }
 </style>

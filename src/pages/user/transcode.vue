@@ -39,13 +39,9 @@
             <div class="w-all h-all flex ai-c jc-c">
                 <div class="w-600 flex fd-c sha-all pp5 ra-5 bc-fff">
                     <div class="flex ai-c jc-b">
-                        <span class="ml10">上传平台：</span>
-                        <el-select class="flex-1 ml15 mr15" multiple size="mini" v-model="ftpCode" placeholder="请选择上传平台">
-                            <el-option v-for="item in ftplist" :key="item.value" :label="item.customerName" :value="item.ftpCode"></el-option>
-                        </el-select>
-                        <span @click="closeDialog" class="iconfont hand icondelete fs-18 mr10"></span>
+                        <span @click="closeDialog" class="iconfont hand icondelete fs-18 mr10 "></span>
                     </div>
-                    <div @click="isCodeUpload" style="height:450px;">
+                    <div  style="height:450px;">
                         <uploader @file-success="onFileSuccess" :file-status-text="statusText" @file-added="onFileAdded" ref="uploader" :options="options" class="flex fd-c w-all h-all mt10 pl10 pr10 uploads">
                             <uploader-drop style="border: 1px dashed #d9d9d9;" class="br-5 flex jc-c c-aaa fd-c hand mb10 pb10">
                                 <uploader-btn class="flexupload" style="border:0;">
@@ -263,14 +259,8 @@
                 return uuid;
             },
             onFileAdded(file) {
-                if (!this.ftpCode.length) {
-                    this.$message.error("请先选择上传平台");
-                    file.ignored = true;
-                } else {
-                    this.options.query.ftpCode = this.ftpCode.toString();
-                    this.options.query.userId = this.storage("userinfo").id;
-                    this.options.query.guid = this.uuid();
-                }
+                this.options.query.userId = this.storage("userinfo").id;
+                this.options.query.guid = this.uuid();
             },
             openDialog(){
                 this.isUpload = true;
