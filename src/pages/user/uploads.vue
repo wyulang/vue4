@@ -238,7 +238,7 @@ export default {
          }).then(res => {
               this.dianList = res.data;
          });
-      api.get("sys/ftpCustomerList", {}).then(res => {
+      api.get("sys/ftpCustomerList", {type:"0"}).then(res => {
         this.ftplist = res.data;
       });
     },

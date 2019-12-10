@@ -21,10 +21,10 @@
             <td class="w-10">
               <el-checkbox></el-checkbox>
             </td>
-            <td>{{item.innerFtpUsername}}</td>
-            <td>{{item.innerFtpPassword}}</td>
-            <td>{{item.innerFtpHost}}</td>
-            <td>{{item.innerFtpPort}}</td>
+            <td>{{item.ftpUsername}}</td>
+            <td>{{item.ftpPassword}}</td>
+            <td>{{item.ftpHost}}</td>
+            <td>{{item.ftpPort}}</td>
             <td>
               <span @click="getData(item)" class="hand">编辑</span>
             </td>
@@ -43,19 +43,19 @@
       <div class="w-all">
         <div class="flex ai-c mb10">
           <span class="w-90">ftp用户名</span>
-          <el-input v-model="user.innerFtpUsername" placeholder="请输入内容"></el-input>
+          <el-input v-model="user.ftpUsername" placeholder="请输入内容"></el-input>
         </div>
         <div class="flex ai-c mb10">
           <span class="w-90">ftp密码</span>
-          <el-input v-model="user.innerFtpPassword" placeholder="请输入内容"></el-input>
+          <el-input v-model="user.ftpPassword" placeholder="请输入内容"></el-input>
         </div>
         <div class="flex ai-c mb10">
           <span class="w-90">ftp域名</span>
-          <el-input v-model="user.innerFtpHost" placeholder="请输入内容"></el-input>
+          <el-input v-model="user.ftpHost" placeholder="请输入内容"></el-input>
         </div>
         <div class="flex ai-c mb10">
           <span class="w-90">ftp端口</span>
-          <el-input v-model="user.innerFtpPort" placeholder="请输入内容"></el-input>
+          <el-input v-model="user.ftpPort" placeholder="请输入内容"></el-input>
         </div>
         <span slot="footer" class="w-all flex jc-e">
           <el-button @click="isModel = false">取 消</el-button>
@@ -74,17 +74,21 @@ export default {
       isModify: false,
       list: [],
       user: {
-          innerFtpHost: "",
-          innerFtpPort: "",
-          innerFtpUsername: "",
-          innerFtpPassword: "",
-          id: ""
+          ftpHost: "",
+          ftpPort: "",
+          ftpUsername: "",
+          ftpPassword: "",
+          id: "",
+          ftpType:"1"
+      },
+      query:{
+          type:"1"
       }
     };
   },
   methods: {
     initData() {
-      api.get("sys/innerFtpList").then(res => {
+      api.get("sys/ftpCustomerList",this.query).then(res => {
         if(res.code==2000){
           this.list = res.data;
         }
@@ -95,7 +99,7 @@ export default {
       this.isModel = true;
     },
     modifyBtn() {
-        api.post("sys/updateInnerFtp", this.user).then(res => {
+        api.post("sys/editFtpInfo", this.user).then(res => {
             this.initData();
             this.$message.success("修改成功");
             this.isModel = false;

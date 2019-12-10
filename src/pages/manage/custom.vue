@@ -13,10 +13,18 @@
 
         <span>
           <el-button
+                  class ="hand mr10"
                   type="text"
                   size="mini"
                   @click="() => append(data)">
             新增
+          </el-button>
+          <el-button
+                  class ="hand"
+                  type="text"
+                  size="mini"
+                  @click="() => saveData(data)">
+            编辑
           </el-button>
           <!--<el-button
                   type="text"
@@ -37,12 +45,12 @@
       </el-radio-group>
       <div class="h-45 bb flex">
         <div class="flex-1 flex ai-e btn-upload pb6">
-          <div @click="isModel=true;user={},user.id=0,isReadonly=false;" class="h-30 lh-25 bc-f5 btn-item">
+          <div @click="btnNewClick" class="h-30 lh-25 bc-f5 btn-item">
             <i class="iconfont icontianjia"></i> 新增
           </div>
-          <div class="h-30 lh-25 bc-f5 btn-item">
+          <!--<div class="h-30 lh-25 bc-f5 btn-item">
             <i class="iconfont iconshanchu"></i> 批量删除
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
@@ -115,7 +123,19 @@
         </div>
         <div class="flex ai-c mb20">
           <span class="w-90">密码：</span>
-          <el-input v-model="user.password" placeholder="请输入密码,长度至少为6位"></el-input>
+          <el-input v-model="user.password" placeholder="请输入密码,长度至少为6位" type="password"></el-input>
+        </div>
+        <div class="flex ai-c mb20">
+            <span class="w-90">部门：</span>
+            <!--<el-input v-model="user.departmentName"></el-input>-->
+            <el-select v-model = "user.departmentId">
+                <el-option
+                        v-for="item in options"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id">
+                </el-option>
+            </el-select>
         </div>
         <span slot="footer" class="w-all flex jc-e">
           <el-button @click="isModel = false">取 消</el-button>
@@ -149,7 +169,7 @@
           <el-input v-model="depart.shortName" placeholder="部门简称"></el-input>
         </div>
         <span slot="footer" class="w-all flex jc-e">
-          <el-button @click="isModel = false">取 消</el-button>
+          <el-button @click="isAddNode = false">取 消</el-button>
           <el-button type="primary" @click="btnAddNode">确 定</el-button>
         </span>
       </div>
@@ -171,7 +191,7 @@ export default {
           pageNum: 1,
           total: 0,
           role: "1",
-          departmentId:""
+          departmentId:"1"
         },
       user: {
         username: "",
@@ -179,7 +199,9 @@ export default {
         password: "",
         role: "1",
         userId: 0,
-        id: 0
+        id: 0,
+        departmentId:"1",
+        departmentName:"金华广电"
       },
      departList:[],
      isAddNode:false,
@@ -187,8 +209,11 @@ export default {
      depart:{
        name:"",
        shortName:"",
-       parentId:""
-     }
+       parentId:"",
+       id:""
+     },
+     value:"",
+     options:[]
     };
   },
   methods: {
@@ -213,6 +238,13 @@ export default {
             .then(res => {
                 if (res.code == 2000) {
                     this.departList = res.data;
+                }
+            });
+        api
+            .get("sys/departmentAllList")
+            .then(res => {
+                if (res.code == 2000) {
+                    this.options = res.data;
                 }
             });
     },
@@ -272,6 +304,8 @@ export default {
       this.user.loginName = item.loginName;
       this.user.password = item.password;
       this.user.id = item.id;
+      this.user.departmentId = item.departmentId;
+      this.user.departmentName = item.departmentName;
       this.user.role = "1";
       this.isModel = true;
       this.isReadonly=true;
@@ -289,7 +323,6 @@ export default {
         this.isAddNode = true;
         this.depart.parentId = data.id;
         this.nodeData = data;
-
     },
     remove(node,data){
 
@@ -303,16 +336,25 @@ export default {
             }
         });
     },
+    saveData(data){
+        this.isAddNode = true;
+        this.depart.id = data.id;
+        this.depart.name = data.name;
+        this.depart.shortName = data.shortName;
+        this.nodeData = data;
+    },
     btnAddNode(){
         api.post("sys/saveDepart",this.depart).then(res => {
               if(res.code == 2000){
-                  const newChild = { id: res.data.id, name: res.data.name, children: [],shortName:res.data.shortName };
+                  /*const newChild = { id: res.data.id, name: res.data.name, children: [],shortName:res.data.shortName };
                   if (!this.nodeData.children) {
                       this.$set(this.nodeData, 'children', []);
                   }
                   this.nodeData.children.push(newChild);
+                  this.isAddNode = false;*/
                   this.isAddNode = false;
-                  this.$message.success("部门新增成功！");
+                  this.initData();
+                  this.$message.success("操作成功！");
               }
             }
         );
@@ -320,7 +362,18 @@ export default {
     },
     nodeClick(data){
         this.query.departmentId = data.id;
+        this.user.departmentId = data.id;
+        this.user.departmentName = data.name;
         this.initData();
+    },
+    btnNewClick(){
+        this.isModel=true;
+        // this.user={};
+        this.user.username = "";
+        this.user.loginName = "";
+        this.user.password = "";
+        this.user.id=0;
+        this.isReadonly=false;
     }
   },
   created() {

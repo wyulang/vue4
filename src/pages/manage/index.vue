@@ -53,7 +53,8 @@ export default {
           icon: "icon-icon_setting",
           index: 1
         },
-          { name: '编辑下载站点设置', path: 'manage-site', icon: 'icon-user6', index: 2 },
+          { name: '编辑下载站点设置', path: 'manage-site', icon: 'icon-user6', index: 2},
+          { name: '转码站点设置', path: 'manage-trans', icon: 'icon-user6', index: 3},
           { name: '下载统计', path: 'manage-download', icon: 'icon-user6', index: 4 },
 
         // { name: '字典数据', path: 'manage-diction', icon: 'icon-dingdan', index: 4 },

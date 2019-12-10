@@ -52,15 +52,6 @@ const routers = [
 					title: "编辑下载"
 				},
 			},
-            {
-                path: '/user/transcode',
-                name: "user-transcode",
-                component: () => import( /* webpackChunkName: "upload" */'./pages/user/transcode.vue'),
-                meta: {
-                    index: 0,
-                    title: "转码管理"
-                },
-            },
 		]
 	},
 	{
@@ -69,7 +60,7 @@ const routers = [
 		component: () => import( /* webpackChunkName: "upload" */'./pages/manage/index.vue'),
 		meta: {
 			index: 0,
-			title: "用户登录"
+			title: "后端首页"
 		},
 		children: [
 			{
@@ -97,7 +88,16 @@ const routers = [
                 meta: {
                     index: 0,
                     title: "编辑下载站点设置"
-                },
+                }
+            },
+            {
+                path: '/manage/trans',
+                name: "manage-trans",
+                component: () => import( /* webpackChunkName: "upload" */'./pages/manage/trans-site.vue'),
+                meta: {
+                    index: 0,
+                    title: "编辑下载站点设置"
+                }
             },
 			{
 				path: '/manage/admin',
@@ -108,6 +108,15 @@ const routers = [
 					title: "用户登录"
 				},
 			},
+            {
+                path: '/user/transcode',
+                name: "user-transcode",
+                component: () => import( /* webpackChunkName: "upload" */'./pages/user/transcode.vue'),
+                meta: {
+                    index: 0,
+                    title: "转码管理"
+                },
+            },
 			{
 				path: '/manage/diction',
 				name: "manage-diction",
@@ -129,6 +138,10 @@ const routers = [
 		]
 	}
 ]
+const routerPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+    return routerPush.call(this, location).catch(error=> error)
+}
 
 export default new Router({
 	routes: routers
