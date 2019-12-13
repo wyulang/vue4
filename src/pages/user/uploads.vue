@@ -280,7 +280,8 @@ export default {
             ftpCode: this.ftpCode.toString(),
             fileName: file.name,
             userId: this.storage("userinfo").id,
-            guid: data.data.guid
+            guid: data.data.guid,
+            type:"0"
           })
           .then(res => {
             if (res.code == 2000) {

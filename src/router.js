@@ -40,7 +40,7 @@ const routers = [
 				component: () => import( /* webpackChunkName: "upload" */'./pages/user/uploads.vue'),
 				meta: {
 					index: 0,
-					title: "上传管理"
+					title: "外宣推送"
 				},
 			},
 			{
@@ -52,6 +52,15 @@ const routers = [
 					title: "编辑下载"
 				},
 			},
+			{
+                path: '/user/transcode',
+                name: "user-transcode",
+                component: () => import( /* webpackChunkName: "upload" */'./pages/user/transcode.vue'),
+                meta: {
+                    index: 0,
+                    title: "转码管理"
+                },
+            },
 		]
 	},
 	{
@@ -108,15 +117,6 @@ const routers = [
 					title: "用户登录"
 				},
 			},
-            {
-                path: '/user/transcode',
-                name: "user-transcode",
-                component: () => import( /* webpackChunkName: "upload" */'./pages/user/transcode.vue'),
-                meta: {
-                    index: 0,
-                    title: "转码管理"
-                },
-            },
 			{
 				path: '/manage/diction',
 				name: "manage-diction",

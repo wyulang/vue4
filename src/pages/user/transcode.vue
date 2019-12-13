@@ -133,14 +133,6 @@
             };
         },
         methods: {
-            isCodeUpload(e) {
-                if (!this.ftpCode.length) {
-                    this.$message.error("请先选择上传平台");
-                    e.stopPropagation();
-                    window.event.returnValue = false
-                    return;
-                }
-            },
             deleteFiles(item) {
                 this.$confirm("确定要删除吗！").then(res => {
                     api
@@ -221,11 +213,12 @@
 
                 if (data.data.isMerge) {
                     api
-                        .post("sys/mergeAndTranscode", {
-                            ftpCode: this.ftpCode.toString(),
+                        .post("sys/merge", {
+                            ftpCode: '',
                             fileName: file.name,
                             userId: this.storage("userinfo").id,
-                            guid: data.data.guid
+                            guid: data.data.guid,
+                            type:"1"
                         })
                         .then(res => {
                             if (res.code == 2000) {
