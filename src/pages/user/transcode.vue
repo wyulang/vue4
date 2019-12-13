@@ -1,11 +1,14 @@
 <template>
     <div class="w-all">
-        <div class="w-all pl10 sha-6 mb10 pr10 flex pt15 pb15 ai-c jc-s">
-            <el-button @click="openDialog()" size="small" type="primary">添加转码任务</el-button>
-            <el-button @click="initData()" size="small" type="primary">历史任务查询</el-button>
-        </div>
+        <!--<div class="w-all pl200 sha-6 mb10 pr10 flex pt15 pb15 ai-c jc-s">-->
+            <!--<el-button @click="openDialog()" size="small" type="primary">添加转码任务</el-button>-->
+            <!--&lt;!&ndash;<el-button @click="initData()" size="small" type="primary">历史任务查询</el-button>&ndash;&gt;-->
+        <!--</div>-->
 
         <div class="w-all">
+            <!--<div class="w-all pl200 sha-6 mb10 pr10 flex pt15 pb15 ai-c jc-s">
+                <el-button @click="openDialog()" size="small" type="primary">添加转码任务</el-button>
+            </div>-->
             <!--<div v-for="(item, index) in list" :key="index" class="w-all flex ai-c h-40 bb-e">
                 <div class="w-60 centent">
                     &lt;!&ndash; <img  class="h-40 w-30" :src="item.fileUrl" alt /> &ndash;&gt;
@@ -23,6 +26,7 @@
                 </div>
             </div>-->
             <!--<el-table  :data="list" border  style="width: 100%" :row-class-name="tableRowClassName">-->
+            <el-button @click="openDialog()" size="small" type="primary" style=" margin-bottom: 18px;">添加转码任务</el-button>
             <el-table  :data="list" border  style="width: 100%" >
                 <el-table-column prop="createDate" label="时间"></el-table-column>
                 <el-table-column prop="fileName" label="任务名称"></el-table-column>
