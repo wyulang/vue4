@@ -6,22 +6,44 @@
         </div>
 
         <div class="w-all">
-            <div v-for="(item, index) in list" :key="index" class="w-all flex ai-c h-40 bb-e">
+            <!--<div v-for="(item, index) in list" :key="index" class="w-all flex ai-c h-40 bb-e">
                 <div class="w-60 centent">
-                    <!-- <img  class="h-40 w-30" :src="item.fileUrl" alt /> -->
+                    &lt;!&ndash; <img  class="h-40 w-30" :src="item.fileUrl" alt /> &ndash;&gt;
                     <span v-if="onFileType(item.fileName)=='image'" class="iconfont fs-24 fc-999 icontupian"></span>
                     <i v-else class="icon iconfont fs-28 fc-999" :class="onFileType(item.fileName)"></i>
                 </div>
                 <div class="flex-1">{{item.fileName}}</div>
                 <div class="wb-20">上传时间：{{item.createDate | date('YYYY-MM-DD hh:mm:ss')}}</div>
                 <div class="wb-10">文件大小：{{item.fileSize | fileSize}}</div>
-                <!--<div class="w-100 center">
+                &lt;!&ndash;<div class="w-100 center">
                   <span @click="download(item.fileName,item.fileUrl)" class="fc-a hand">查看文件</span>
-                </div>-->
+                </div>&ndash;&gt;
                 <div v-if="query.role==1" class="w-70 fc-btn hand">
-                    <span @click="deleteFiles(item)">删除</span>
+                    <span @click="deleteFiles(item)">重置</span>
                 </div>
-            </div>
+            </div>-->
+            <!--<el-table  :data="list" border  style="width: 100%" :row-class-name="tableRowClassName">-->
+            <el-table  :data="list" border  style="width: 100%" >
+                <el-table-column prop="createDate" label="时间"></el-table-column>
+                <el-table-column prop="fileName" label="任务名称"></el-table-column>
+                <el-table-column prop="username" label="创建者"></el-table-column>
+                <el-table-column prop="taskStatus" label="任务状态"  :formatter = 'stateFormat'></el-table-column>
+                <el-table-column prop="taskEfficiency" label="效率"></el-table-column>
+                <el-table-column prop="fileSize" label="文件大小">
+                    <template scope="scope">
+                        <span style="margin-left: 10px">{{scope.row.fileSize | fileSize}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="100">
+                    <template slot-scope="scope">
+                       <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">重置</el-button>-->
+                        <el-button @click="deleteFiles(scope.row)" type="text" size="small">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
 
             <el-pagination
                     class="fr mt20 mb20"
@@ -135,17 +157,30 @@
         methods: {
             deleteFiles(item) {
                 this.$confirm("确定要删除吗！").then(res => {
-                    api
-                        .post("sys/deleteFile", {
-                            id: item.id,
-                            userId: this.query.userId
-                        })
-                        .then(res => {
-                            this.$message.error("删除成功");
+                    api.post("sys/transcodeDel", {
+                            id: item.id
+                        }).then(res => {
+                            this.$message.success("删除成功");
+                            this.initData();
                         });
                 });
             },
-
+            /*tableRowClassName({row, rowIndex}) {
+                if (row.taskStatus === '1') {
+                    return 'sucess-row';
+                } else if (row.taskStatus === '2') {
+                    return 'danger-row';
+                }
+                return '';
+            },*/
+            stateFormat(row, column){
+                if (row.taskStatus === '1') {
+                    return '成功';
+                } else if (row.taskStatus === '2') {
+                    return '失败';
+                }
+                return '进行中';
+            },
             onFileType(type) {
                 let types = {
                     video: "iconmeiti",
@@ -318,5 +353,12 @@
                 }
             }
         }
+    }
+    .el-table .danger-row {
+        background: #f56c6c;
+    }
+
+    .el-table .sucess-row {
+        background: #67c23a;
     }
 </style>
