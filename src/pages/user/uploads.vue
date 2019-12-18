@@ -1,111 +1,37 @@
 <template>
-  <div class="w-all">
-    <div class="flex w-all pb10 fs-12">
-      <div v-for="(item, index) in dianList" :key="index" class="flex sha-6 mr10 fd-c">
-        <div class="pt10 centent fs-16">{{item.customerName}}</div>
-        <div class="flex pt10 pl10 pr10 pb10">
-          <div class="flex ai-c jc-c fd-c mr10">
-            <span>今日上传</span>
-            <span>
-              <i class="fb fs-20">{{item.uploadCountToday}}</i> 条
-            </span>
-          </div>
-          <div class="flex ai-c jc-c mr10 fd-c">
-            <span>近30日上传</span>
-            <span>
-              <i class="fb fs-20">{{item.uploadCountMonth}}</i>条
-            </span>
-          </div>
-          <div class="flex ai-c jc-c fd-c">
-            <span>年度上传</span>
-            <span>
-              <i class="fb fs-20">{{item.uploadCountYear}}</i>条
-            </span>
-          </div>
+  <div class="fixed at0 ab0 zi-140 bc-t8 al0 ar0">
+    <div class="w-all h-all flex ai-c jc-c">
+      <div class="w-600 flex fd-c sha-all rel pp5 ra-5 bc-fff">
+        <div class="abs ar-18 at-18 bc-fff ra-all sha-all w-23 pt2 h-23"><span @click="$store.commit('setUpload',false)" class="iconfont hand ml2 icondelete fs-18 mr10"></span></div>
+        <div v-if="uploadType==0" class="flex ai-c mt5 jc-b">
+          <span class="ml10">上传平台：</span>
+          <el-select class="flex-1 ml15 mr15" multiple size="mini" v-model="ftpCode" placeholder="请选择上传平台">
+            <el-option v-for="item in ftplist" :key="item.value" :label="item.customerName" :value="item.ftpCode"></el-option>
+          </el-select>
         </div>
-      </div>
-    </div>
-    <div class="w-all pl10 sha-6 mb10 pr10 flex pt15 pb15 ai-c jc-s">
-      <div class="flex-line">
-        <div class="flex-line ai-c mr10">
-          <span class="mr10">开始时间</span>
-          <el-date-picker v-model="query.startTime" size="small" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>
-        </div>
-        <div class="flex-line ai-c mr10">
-          <span class="mr10">结束时间</span>
-          <el-date-picker v-model="query.endTime" size="small" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>
-        </div>
-        <div class="flex-line ai-c mr10">
-          <el-input placeholder="请输入内容" size="small" v-model="query.fileName" clearable></el-input>
-        </div>
-      </div>
-      <el-button @click="initData()" size="small" type="primary">搜索</el-button>
-    </div>
-
-    <div class="w-all">
-      <div v-for="(item, index) in list" :key="index" class="w-all flex ai-c h-40 bb-e">
-        <div class="w-60 centent">
-          <!-- <img  class="h-40 w-30" :src="item.fileUrl" alt /> -->
-          <span v-if="onFileType(item.fileName)=='image'" class="iconfont fs-24 fc-999 icontupian"></span>
-          <i v-else class="icon iconfont fs-28 fc-999" :class="onFileType(item.fileName)"></i>
-        </div>
-        <div class="flex-1">{{item.fileName}}</div>
-        <div class="wb-20">上传时间：{{item.createDate | date('YYYY-MM-DD hh:mm:ss')}}</div>
-        <div class="wb-10">文件大小：{{item.fileSize | fileSize}}</div>
-        <!--<div class="w-100 center">
-          <span @click="download(item.fileName,item.fileUrl)" class="fc-a hand">查看文件</span>
-        </div>-->
-        <div v-if="query.role==1" class="w-70 fc-btn hand">
-          <span @click="deleteFiles(item)">删除</span>
-        </div>
-      </div>
-
-      <el-pagination
-              class="fr mt20 mb20"
-              @current-change="handleCurrentChange"
-              @size-change="handleSizeChange"
-              :current-page="query.pageNum"
-              :page-size="query.pageSize"
-              background
-              layout="total,sizes,prev, pager, next"
-              :page-sizes="[10, 20]"
-              :total="total">
-      </el-pagination>
-    </div>
-    <div v-show="isUpload" class="fixed at0 ab0 al0 ar0">
-      <div class="w-all h-all flex ai-c jc-c">
-        <div class="w-600 flex fd-c sha-all pp5 ra-5 bc-fff">
-          <div class="flex ai-c jc-b">
-            <span class="ml10">上传平台：</span>
-            <el-select class="flex-1 ml15 mr15" multiple size="mini" v-model="ftpCode" placeholder="请选择上传平台">
-              <el-option v-for="item in ftplist" :key="item.value" :label="item.customerName" :value="item.ftpCode"></el-option>
-            </el-select>
-            <span @click="$store.commit('setUpload',false)" class="iconfont hand icondelete fs-18 mr10"></span>
-          </div>
-          <div @click="isCodeUpload" style="height:450px;">
-            <uploader @file-success="onFileSuccess" :file-status-text="statusText" @file-added="onFileAdded" ref="uploader" :options="options" class="flex fd-c w-all h-all mt10 pl10 pr10 uploads">
-              <uploader-drop style="border: 1px dashed #d9d9d9;" class="br-5 flex jc-c c-aaa fd-c hand mb10 pb10">
-                <uploader-btn class="flexupload" style="border:0;">
-                  <div class="flex jc-c">
-                    <i style="font-size:60px;" class="iconfont iconicon--"></i>
-                  </div>
-                  <div class="flex jc-c">
-                    将文件拖到此处，或
-                    <em class="fc-primary">点击上传</em>
-                  </div>
-                </uploader-btn>
-              </uploader-drop>
-              <div id="uploaders" ref="uploaders" style="flex:1;position:relative">
-                <div class="body-flies">
-                  <div class="h-all" v-bar>
-                    <div>
-                      <uploader-list></uploader-list>
-                    </div>
+        <div @click="isCodeUpload" style="height:450px;">
+          <uploader @file-success="onFileSuccess" :file-status-text="statusText" @file-added="onFileAdded" ref="uploader" :options="options" class="flex fd-c w-all h-all mt10 pl10 pr10 uploads">
+            <uploader-drop style="border: 1px dashed #d9d9d9;" class="br-5 flex jc-c c-aaa fd-c hand mb10 pb10">
+              <uploader-btn class="flexupload" style="border:0;">
+                <div class="flex jc-c">
+                  <i style="font-size:60px;" class="iconfont iconicon--"></i>
+                </div>
+                <div class="flex jc-c">
+                  将文件拖到此处，或
+                  <em class="fc-primary">点击上传</em>
+                </div>
+              </uploader-btn>
+            </uploader-drop>
+            <div id="uploaders" ref="uploaders" style="flex:1;position:relative">
+              <div class="body-flies">
+                <div class="h-all" v-bar>
+                  <div>
+                    <uploader-list></uploader-list>
                   </div>
                 </div>
               </div>
-            </uploader>
-          </div>
+            </div>
+          </uploader>
         </div>
       </div>
     </div>
@@ -115,9 +41,7 @@
 import api from "../../store/api.js";
 import { mapState } from "vuex";
 export default {
-  computed: {
-    ...mapState(["isUpload"])
-  },
+  props:['uploadType'],
   data() {
     return {
       fileTypes: {
@@ -127,16 +51,6 @@ export default {
         video: ["3gp", "flv", "rmvb", "avi", "wmv", "mpeg4"],
         zip: ["zip", "rar", "7z", "cab"]
       },
-      query: {
-        startTime: "",
-        endTime: "",
-        fileName: "",
-        pageSize: 10,
-        pageNum: 1,
-        userId: this.storage("userinfo").id,
-        role: this.storage("userinfo").role
-      },
-      list: [],
       dianList: [],
       total: 0,
       isFile: true,
@@ -163,7 +77,7 @@ export default {
           ftpCode: "",
           userId: ""
         },
-        withCredentials:true,
+        withCredentials: true,
         testMethod: "POST",
         maxChunkRetries: 3, //最大自动失败重试上传次数
         testChunks: false, //是否开启服务器分片校验
@@ -181,7 +95,7 @@ export default {
   },
   methods: {
     isCodeUpload(e) {
-      if (!this.ftpCode.length) {
+      if (!this.ftpCode.length&&this.uploadType==0) {
         this.$message.error("请先选择上传平台");
         e.stopPropagation();
         window.event.returnValue = false
@@ -222,34 +136,14 @@ export default {
       return dal;
     },
     initData() {
-      const loading = this.$loading({
-        lock: true,
-        text: "Loading",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
-      });
-      api.get("sys/fileList", this.query).then(res => {
-        loading.close();
-        this.list = res.data.list;
-        this.total = res.data.total;
-      });
       api.get("sys/getCustomerList", {
-         userId: this.storage("userinfo").id
-         }).then(res => {
-              this.dianList = res.data;
-         });
-      api.get("sys/ftpCustomerList", {type:"0"}).then(res => {
+        userId: this.storage("userinfo").id
+      }).then(res => {
+        this.dianList = res.data;
+      });
+      api.get("sys/ftpCustomerList", { type: "0" }).then(res => {
         this.ftplist = res.data;
       });
-    },
-    handleSizeChange(val) {
-        this.query.pageSize = val;
-          // console.log(`每页 ${val} 条`);
-        this.handleCurrentChange(1);
-      },
-    handleCurrentChange(val){
-        this.query.pageNum = val;
-        this.initData();
     },
     download(filename, src) {
       var element = document.createElement("a");
@@ -281,12 +175,13 @@ export default {
             fileName: file.name,
             userId: this.storage("userinfo").id,
             guid: data.data.guid,
-            type:"0"
+            type: this.uploadType
           })
           .then(res => {
             if (res.code == 2000) {
               this.$message.success(file.name.concat("上传完成"));
               this.initData();
+              this.$store.state.changeUpload = this.$store.state.changeUpload + 1;
               setTimeout(v => {
                 file.cancel();
               });
@@ -296,6 +191,7 @@ export default {
       if (file.totalChunks <= 1) {
         this.$message.success(file.name.concat("上传完成"));
         this.initData();
+        this.$store.state.changeUpload = this.$store.state.changeUpload + 1;
         setTimeout(v => {
           file.cancel();
         });
@@ -315,7 +211,7 @@ export default {
       return uuid;
     },
     onFileAdded(file) {
-      if (!this.ftpCode.length) {
+      if (!this.ftpCode.length&&this.uploadType==0) {
         this.$message.error("请先选择上传平台");
         file.ignored = true;
       } else {
@@ -327,12 +223,14 @@ export default {
   },
   created() {
     this.options.target = api.getDomainApi() + this.baseUrl;
-    this.isShow = this.$route.query.s;
     this.initData();
   }
 };
 </script>
 <style lang="less">
+.bc-t8 {
+  background-color: rgba(0, 0, 0, 0.5);
+}
 .menu-bg {
   background-color: #4dcaad;
 }

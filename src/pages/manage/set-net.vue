@@ -1,13 +1,10 @@
 <template>
-  <div class="flex fd-c h-all w-all">
-    <div class="h-45 bb flex">
-      <div class="flex-1 flex ai-e btn-upload pb6">
-        <div @click="isModel=true;" class="h-30 lh-25 bc-f5 btn-item "><i class=" iconfont icontianjia"></i> 新增</div>
-        <!--<div class="h-30 lh-25 bc-f5 btn-item"><i class=" iconfont iconshanchu"></i> 批量删除</div>-->
-      </div>
+  <div class="w-all bc-fff ra-4 pl10 pr10 pb10 sha-7">
+    <div class="pt10 flex pb10">
+      <el-button @click="isModel=true;" icon="iconfont icontianjia" size="small">新增</el-button>
     </div>
-    <div class="pl10 pb10 pt10">
-      <table class="table">
+    <div class="sha-3 mt5">
+      <table class="table w-all">
         <thead>
           <tr>
             <td class="w-10">
@@ -41,24 +38,14 @@
         </tbody>
       </table>
     </div>
-    <el-dialog title="删除提示"
-               :center="true"
-               width="400px"
-               :append-to-body="true"
-               :visible.sync="isConfirm">
+    <el-dialog title="删除提示" :center="true" width="400px" :append-to-body="true" :visible.sync="isConfirm">
       <span> 您是否确定删除该信息?</span>
       <span slot="footer" class="w-all flex jc-e">
-          <el-button @click="isConfirm = false">取 消</el-button>
-          <el-button type="primary" @click="btnDelete">确 定</el-button>
-        </span>
+        <el-button @click="isConfirm = false">取 消</el-button>
+        <el-button type="primary" @click="btnDelete">确 定</el-button>
+      </span>
     </el-dialog>
-    <el-dialog
-      title="站点"
-      :center="true"
-      width="400px"
-      :append-to-body="true"
-      :visible.sync="isModel"
-    >
+    <el-dialog title="站点" :center="true" width="400px" :append-to-body="true" :visible.sync="isModel">
       <div class="w-all">
         <div class="flex ai-c mb10">
           <span class="w-90">客户名称</span>
@@ -95,8 +82,8 @@ export default {
     return {
       isModel: false,
       isModify: false,
-      isConfirm:false,
-      deleteId:"",
+      isConfirm: false,
+      deleteId: "",
       list: [],
       user: {
         customerName: "",
@@ -105,17 +92,17 @@ export default {
         ftpUsername: "",
         ftpPassword: "",
         id: "",
-        ftpType:"0"
+        ftpType: "0"
       },
-      query:{
-          type:"0"
+      query: {
+        type: "0"
       }
     };
   },
   methods: {
     initData() {
-      api.get("sys/ftpCustomerList",this.query).then(res => {
-        if(res.code==2000){
+      api.get("sys/ftpCustomerList", this.query).then(res => {
+        if (res.code == 2000) {
           this.list = res.data;
         }
       });
@@ -138,28 +125,28 @@ export default {
     modifyBtn() {
       if (this.user.id) {
         api.post("sys/editFtpInfo", this.user).then(res => {
-            this.initData();
-            this.$message.success("修改成功");
-            this.isModel = false;
+          this.initData();
+          this.$message.success("修改成功");
+          this.isModel = false;
 
         });
       } else {
         this.btnAdd();
       }
     },
-   reomoveData(item){
+    reomoveData(item) {
       this.deleteId = item.id;
       this.isConfirm = true;
-   },
-   btnDelete(){
-     api.post("sys/deleteFtpInfo",{id:this.deleteId}).then(res => {
-        if(res.code == 2000){
-            this.isConfirm = false;
-            this.initData();
-            this.$message.success("删除成功");
+    },
+    btnDelete() {
+      api.post("sys/deleteFtpInfo", { id: this.deleteId }).then(res => {
+        if (res.code == 2000) {
+          this.isConfirm = false;
+          this.initData();
+          this.$message.success("删除成功");
         }
-     })
-   }
+      })
+    }
   },
   created() {
     this.initData();

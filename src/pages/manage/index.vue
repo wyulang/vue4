@@ -1,73 +1,73 @@
 <template>
-  <div class="flex ai-c jc-c h-all w-all relative manages">
-    <canvas style="z-index:1" class="w-all h-all relative" id="starts">该浏览器不支持canvas</canvas>
-    <div class="login-body">
-      <div class="contents">
-        <div class="content-body">
-          <section class="lefts">
-            <div class="titles flex ai-c">
-              <span class="iconfont iconiconfontmyfill fs-21 mr10"></span>
-              {{storage('userinfo').loginName}}
-            </div>
-            <div class="navs">
-              <div
-                :class="{'active':navActive==item.index}"
-                v-for="(item, index) in menu"
-                :key="index"
-                @click="toMenu(item)"
-                class="navs-item"
-              >
-                <i :class="item.icon" class="icon iconfont"></i>
-                <span class="w-100 ml10">{{item.name}}</span>
-              </div>
-            </div>
-          </section>
-          <section class="rights flex fd-c">
-            <router-view></router-view>
-          </section>
+  <div class='w-all wi-1000 ff h-all'>
+    <section class="w-all h-all flex">
+      <section class="w-220 bc-bs1 hi-100">
+        <div class="h-45 bc-bs11 flex fc-fff ai-c jc-s">
+          <span class="iconfont fs-20 mr10 fc-fff pl20 iconwenjianguanli"></span><span class="fs-14">传媒之窗</span>
         </div>
-      </div>
-    </div>
+        <div class="mt5">
+          <el-menu @select="menuSelect" class="br-0 menu-config">
+            <transition v-for="(item, index) in menu" :key="index">
+              <el-submenu class="menu-config-title" v-if="item.children" :index="item.path">
+                <div slot="title">
+                  <i :class="item.icon" class="iconfont mr12"></i>
+                  <span class="title" slot="title">{{item.title}}</span>
+                </div>
+                <el-menu-item-group>
+                  <el-menu-item class="menu-config-item" v-for="(child, index) in item.children" :key="index" :index="child.path">
+                    <i :class="child.icon" class="iconfont mr6"></i><span>{{child.title}}</span>
+                  </el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+              <el-menu-item class="menu-config-title" :index="item.path">
+                <i :class="item.icon" class="iconfont mr12"></i>
+                <span slot="title">{{item.title}}</span>
+              </el-menu-item>
+            </transition>
+          </el-menu>
+        </div>
+      </section>
+      <section class="flex-1 h-all fd-c flex">
+        <div class="h-45 bc-bs10 flex ai-c jc-b">
+          <span></span>
+          <div class="mr10 flex ai-c">
+            <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
+            <span class="fc-fff fs-16 ml10">{{user.loginName}}</span>
+          </div>
+        </div>
+        <div class="pp10 bc-bs flex-1 auto">
+          <router-view></router-view>
+        </div>
+      </section>
+    </section>
   </div>
+
 </template>
+
 <script>
 import { mapActions } from "vuex";
 import api from "../../store/api.js";
-// import canvas from '../../assets/coaves.js';
 export default {
   data() {
     return {
-      message: "欢迎登录",
-      navType: 0,
-      navActive: 0,
+      user: this.storage('userinfo'),
       menu: [
-        {
-          name: "用户管理",
-          path: "manage-custom",
-          icon: "icon-user6",
-          index: 0
-        },
-        {
-          name: "外宣站点设置",
-          path: "manage-net",
-          icon: "icon-icon_setting",
-          index: 1
-        },
-          { name: '编辑下载站点设置', path: 'manage-site', icon: 'icon-user6', index: 2},
-          { name: '转码站点设置', path: 'manage-trans', icon: 'icon-user6', index: 3},
-          { name: '下载统计', path: 'manage-download', icon: 'icon-user6', index: 4 },
-
-        // { name: '字典数据', path: 'manage-diction', icon: 'icon-dingdan', index: 4 },
-          { name: "退出登录", path: "clear", icon: "icon-tuichu2", index: 5 }
+        { title: "用户管理", path: "manage-custom", icon: "iconyonghu2", index: 0 },
+        { title: "外宣站点设置", path: "manage-net", icon: "iconqiu", index: 1 },
+        { title: '编辑下载站点设置', path: 'manage-site', icon: 'iconzhandian', index: 2 },
+        { title: '转码站点设置', path: 'manage-trans', icon: 'iconzhuanmaguanli', index: 3 },
+        { title: '下载统计', path: 'manage-download', icon: 'iconLC_icon_download_fill', index: 4 },
+        // { title: '字典数据', path: 'manage-diction', icon: 'icon-dingdan', index: 4 },
+        { title: "退出登录", path: "clear", icon: "icontuichu2", index: 5 }
       ]
-    };
+    }
+  },
+  mounted() {
+
   },
   methods: {
-    goindex() {
-      this.$router.push({ name: "index" });
-    },
-    toMenu(item) {
-      if (item.path == "clear") {
+    menuSelect(value) {
+      if (value == "clear") {
         api.get("sys/logout", {}).then(res => {
           if (res.code == 2000) {
             localStorage.clear();
@@ -76,116 +76,16 @@ export default {
         });
         return;
       }
-      this.navActive = item.index;
-      this.$router.push({ name: item.path });
+      this.$router.push({ name: value });
     }
   },
   created() {
     if (!this.storage("userinfo")) {
       this.$router.push({ name: "login" });
     }
-    // this.navActive=this.menu.filter(v=>{return v.path==this.$route.name})[0].index;
-  },
-  mounted() {
-    // canvas("starts", 230, 1000, 60, 2, 50000, 0.5);
-  }
-};
-</script>
-<style lang="less">
-.manages {
-  .login-body {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: 22;
-    .contents {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      box-sizing: border-box;
-      padding: 0;
-      .content-body {
-        width: 100%;
-        min-width: 950px;
-        background-color: #fff;
-        opacity: 0.95;
-        display: flex;
-        .navs {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          .navs-item {
-            display: flex;
-            background-color: #62676c;
-            color: #fff;
-            cursor: pointer;
-            width: 100%;
-            align-items: center;
-            padding: 15px 0;
-            align-items: center;
-            justify-content: center;
-            border-bottom: 1px solid #6d6d6d;
-            &.active {
-              color: #fff;
-              background-color: #67c23a;
-            }
-            &:hover {
-              background-color: #3a8ee6;
-              border-bottom: 1px solid #3a8ee6;
-            }
-          }
-        }
-        .lefts {
-          background-color: #909399;
-          width: 170px;
-        }
-        .rights {
-          flex: 1;
-          .btn-upload {
-            .btn-item {
-              margin-left: 10px;
-              padding: 2px 10px;
-              cursor: pointer;
-              i {
-                font-weight: bold;
-                font-size: 15px;
-              }
-              &.active {
-                color: #67c23a;
-              }
-            }
-          }
-          .btn-change {
-            div {
-              padding: 3px 5px;
-            }
-          }
-        }
-        .titles {
-          background-color: #3e3f43;
-          color: #fff;
-          line-height: 45px;
-          padding-left: 20px;
-          font-size: 16px;
-        }
-        .inpust {
-          background-color: transparent;
-          input {
-            background-color: transparent;
-            color: #fff;
-            width: 100%;
-            border: 1px solid #3872f6;
-            border-radius: 3px;
-            line-height: 40px;
-            padding: 2px 5px 2px 30px;
-            background: none;
-          }
-        }
-      }
-    }
   }
 }
+</script>
+
+<style lang='less'>
 </style>

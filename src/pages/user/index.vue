@@ -1,101 +1,27 @@
 <template>
   <div class="h-all w-all auto">
-    <div class="w-all hi-all flex">
-      <div class="w-200 wi-200 menu-bgs sha-right">
-        <div class="w-all bg-bc fc-fff pt10 pb20">
-          <div class="pb13 centent fc-a0cfff flex ai-c jc-c fs-16">
-            <span class="iconfont fs-20 iconiconfontmyfill mr6"></span>
-            <a @click="modifyPassword()">
-              <span>{{this.storage("userinfo").username}}</span>
-            </a>
+   <div class="flex w-all pb10 fs-12">
+      <div v-for="(item, index) in dianList" :key="index" class="flex sha-6 mr10 fd-c">
+        <div class="pt10 centent fs-16">{{item.customerName}}</div>
+        <div class="flex pt10 pl10 pr10 pb10">
+          <div class="flex ai-c jc-c fd-c mr10">
+            <span>今日上传</span>
+            <span>
+              <i class="fb fs-20">{{item.uploadCountToday}}</i> 条
+            </span>
           </div>
-          <div @click="toUrl('index')" class="flex fd-c pt20 menu-lines ai-c jc-c hand">
-            <span class="iconfont fs-50 iconzhuye1"></span>
-            <span>首页</span>
+          <div class="flex ai-c jc-c mr10 fd-c">
+            <span>近30日上传</span>
+            <span>
+              <i class="fb fs-20">{{item.uploadCountMonth}}</i>条
+            </span>
           </div>
-          <div @click="toUrl('upload')" class="flex fd-c ai-c jc-c mt20 hand">
-            <span class="iconfont fs-35 iconshangchuan"></span>
-            <span>外宣推送</span>
+          <div class="flex ai-c jc-c fd-c">
+            <span>年度上传</span>
+            <span>
+              <i class="fb fs-20">{{item.uploadCountYear}}</i>条
+            </span>
           </div>
-          <div v-if="user.role==1" @click="toUrl('file')" class="flex fd-c ai-c jc-c mt20 hand">
-            <span class="iconfont fs-38 iconwenjian"></span>
-            <span>编辑下载</span>
-          </div>
-          <div v-if="user.role==1" @click="toUrl('transcode')" class="flex fd-c ai-c jc-c mt20 hand">
-            <span class="iconfont fs-38 iconwenjian"></span>
-            <span>转码管理</span>
-          </div>
-          <div @click="loginout()" class="flex fd-c ai-c jc-c mt30 hand">
-            <i class="iconfont fs-35 icontuichu"></i>
-            <span>退出登录</span>
-          </div>
-        </div>
-      </div>
-      <div class="flex-1 pl20 pr20">
-        <router-view></router-view>
-      </div>
-    </div>
-    <el-dialog title="修改密码" :center="true" width="400px" :append-to-body="true" :visible.sync="isModel">
-      <!--<div class="w-all">
-        <div class="flex ai-c mb10">
-          <span class="w-90" prop="pass">原密码</span>
-          <el-input v-model="ruleForm.pass" placeholder="请输入原密码" type="password"></el-input>
-        </div>
-        <div class="flex ai-c mb10">
-          <span class="w-90" prop="newpass">新密码</span>
-          <el-input v-model="ruleForm.newpass" placeholder="请输入新密码" type="password"></el-input>
-        </div>
-        <div class="flex ai-c mb10">
-          <span class="w-90" prop="checknewpass">重复新密码</span>
-          <el-input v-model="ruleForm.checknewpass" placeholder="请再次输入新密码" type="password"></el-input>
-        </div>
-        <span slot="footer" class="w-all flex jc-e">
-          <el-button @click="isModel = false">取 消</el-button>
-          <el-button type="primary" @click="modifyBtn">确 定</el-button>
-        </span>
-      </div>-->
-      <el-form :inline="true" :model="ruleForm" ref="ruleForm" :rules="rules" label-width="120px" size="medium">
-        <el-row class="text-center">
-          <el-col :span="24">
-            <el-form-item label="旧密码" prop="oldPsd">
-              <el-input type="password" v-model="ruleForm.oldPsd" placeholder="请输入旧密码"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="新密码" prop="newPsd">
-              <el-input type="password" v-model="ruleForm.newPsd" placeholder="请输入新密码"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="确认新密码" prop="checkNewPsd">
-              <el-input type="password" v-model="ruleForm.checkNewPsd" placeholder="请再次输入新密码"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24" :offset="15">
-            <el-form-item size="small" class="el-icon--left">
-              <el-button @click="isModel = false">取消</el-button>
-              <el-button type="primary" @click="modifyBtn">确定修改</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-    </el-dialog>
-    <div :class="{'w-400':isFile,'':!isFile}" v-if="downloadFile.length>1" class=" fixed ab0 zi-100 ar0 sha-all bc-fff pp10">
-      <div @click="isFile=!isFile" class="abs zi-120 hand at-11 al-11">
-        <span :class="{'iconicon-error':isFile,'iconshouzhankaiqi':!isFile}" class="iconfont fs-17 fc-999"></span>
-      </div>
-      <div v-if="!isFile">
-        <span class="iconfont fs-25 fc-999 iconxiazai"></span>
-      </div>
-      <div v-if="isFile" style="max-height: 150px" class="w-all auto">
-        <div v-show="item.uid!='111'" v-for="(item, index) in downloadFile" :key="index" class="w-all bb-e mt3 pt3 flex fd-c">
-          <div class="fs-13 flex ai-c">
-            <span class="iconfont iconLC_icon_download_fill fs-12"></span>
-            <span class="ml10">{{item.fileName}}</span>
-          </div>
-          <el-progress class="w-all flex ai-c" :percentage="item.pross"></el-progress>
         </div>
       </div>
     </div>

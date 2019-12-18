@@ -7,7 +7,9 @@ Vue.use(VueClipboard)
 export default new Vuex.Store({
   state: {
     isUpload: false,
-    downloadFile: [{uid:'111',pross:0}]
+    downloadFile: [{uid:'111',pross:0}],
+    changeUpload:0,
+    isTrans:false,
   },
   actions: {
   },
@@ -16,7 +18,8 @@ export default new Vuex.Store({
       state.isMenu = val
     },
     setUpload(state, value) {
-      state.isUpload = value
+      state.isUpload = value;
+      state.isTrans=value;
     },
     setDownLoad(state, val) {
       state.downloadFile = val;

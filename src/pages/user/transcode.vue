@@ -27,7 +27,7 @@
             </div>-->
             <!--<el-table  :data="list" border  style="width: 100%" :row-class-name="tableRowClassName">-->
             <el-button @click="openDialog()" size="small" type="primary" style=" margin-bottom: 18px;">添加转码任务</el-button>
-            <el-table  :data="list" border  style="width: 100%" >
+            <!-- <el-table  :data="list" border  style="width: 100%" >
                 <el-table-column prop="createDate" label="时间"></el-table-column>
                 <el-table-column prop="fileName" label="任务名称"></el-table-column>
                 <el-table-column prop="username" label="创建者"></el-table-column>
@@ -42,12 +42,12 @@
                         fixed="right"
                         label="操作"
                         width="100">
-                    <template slot-scope="scope">
-                       <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">重置</el-button>-->
+                    <template >
+                       <el-button @click="handleClick(scope.row)" type="text" size="small">重置</el-button>
                         <el-button @click="deleteFiles(scope.row)" type="text" size="small">删除</el-button>
                     </template>
                 </el-table-column>
-            </el-table>
+            </el-table> -->
 
             <el-pagination
                     class="fr mt20 mb20"
@@ -61,39 +61,7 @@
                     :total="total">
             </el-pagination>
         </div>
-        <div v-show="isUpload" class="fixed at0 ab0 al0 ar0">
-            <div class="w-all h-all flex ai-c jc-c">
-                <div class="w-600 flex fd-c sha-all pp5 ra-5 bc-fff">
-                    <div class="flex ai-c jc-b">
-                        <span @click="closeDialog" class="iconfont hand icondelete fs-18 mr10 "></span>
-                    </div>
-                    <div  style="height:450px;">
-                        <uploader @file-success="onFileSuccess" :file-status-text="statusText" @file-added="onFileAdded" ref="uploader" :options="options" class="flex fd-c w-all h-all mt10 pl10 pr10 uploads">
-                            <uploader-drop style="border: 1px dashed #d9d9d9;" class="br-5 flex jc-c c-aaa fd-c hand mb10 pb10">
-                                <uploader-btn class="flexupload" style="border:0;">
-                                    <div class="flex jc-c">
-                                        <i style="font-size:60px;" class="iconfont iconicon--"></i>
-                                    </div>
-                                    <div class="flex jc-c">
-                                        将文件拖到此处，或
-                                        <em class="fc-primary">点击上传</em>
-                                    </div>
-                                </uploader-btn>
-                            </uploader-drop>
-                            <div id="uploaders" ref="uploaders" style="flex:1;position:relative">
-                                <div class="body-flies">
-                                    <div class="h-all" v-bar>
-                                        <div>
-                                            <uploader-list></uploader-list>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </uploader>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div>
 </template>
 <script>

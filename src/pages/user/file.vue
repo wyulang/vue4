@@ -1,6 +1,6 @@
 <template>
   <div class="w-all">
-    <div class="flex ai-c sha-b pp10 mt10">
+    <div class="flex ai-c ra-4 bc-fff sha-7 pp10">
       <span class="wi-60">时间排序：</span>
       <div class="flex fc-aaa fd-c">
         <span @click="setQuery(0,1)" :class="{'file-active':query.timesort==1,'fc-ccc':query.timesort==2}" class="iconfont hand iconpaixushang"></span>
@@ -20,7 +20,7 @@
     </div>
 
     <div class="w-all mt10">
-      <el-tree ref="ftree" :default-expanded-keys="[0,1]" :data="list" node-key="id" class="sha-b">
+      <el-tree ref="ftree" :default-expanded-keys="[0,1]" :data="list" node-key="id" class="sha-7 ra-4">
         <div class="w-all ai-c rel bb-fe flex mt3" slot-scope="{ node, data }">
           <div class="flex-1 ml10">
             <span :class="{'iconfile1':data.file,'iconwenjianjia fc-fc6':!data.file}" class="iconfont"></span>
@@ -99,8 +99,6 @@ export default {
         }
         return;
       }
-      // this.downlist.push(JSON.parse(JSON.stringify(data)));
-      // this.$store.commit("setDownLoad", this.downlist);
       data.uptime = new Date().getTime();
       this.$store.state.downloadFile.push(data);
       this.$store.state.downloadFile.sort((a, b) => {
@@ -260,14 +258,9 @@ export default {
       }
     },
     initData() {
-      const loading = this.$loading({
-        lock: true,
-        text: "Loading",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
-      });
+      this.spinner.show();
       api.get("sys/findFileList", { userId: this.user.id }).then(res => {
-        loading.close();
+        this.spinner.close();
         if (res.code == 2000) {
           this.list = res.data[0].ftpFile;
           this.recursion(this.list, true);
@@ -292,7 +285,7 @@ export default {
           v.isVideo = this.metas.includes(
             v.fileName
               .split(".")
-              [v.fileName.split(".").length - 1].toLocaleLowerCase()
+            [v.fileName.split(".").length - 1].toLocaleLowerCase()
           );
           if (b) {
             v.id = index;
@@ -313,7 +306,7 @@ export default {
     },
     generateUUID() {
       var d = new Date().getTime(),
-        uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(
+        uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (
           c
         ) {
           var r = (d + Math.random() * 16) % 16 | 0;

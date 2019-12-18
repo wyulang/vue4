@@ -1,7 +1,7 @@
 <template>
-  <div class="w-all">
-    <div class="pl10 pt10 pb10" >
-      <table class="table">
+   <div class="w-all bc-fff ra-4 pl10 pr10 pb10 sha-7 pt10">
+    <div class="sha-3">
+      <table class="table w-all">
         <thead class="sha-6">
           <tr>
             <td class="w-10">
@@ -30,7 +30,7 @@
         </tbody>
       </table>
       <div class="flex jc-e">
-        <el-pagination
+        <el-pagination hide-on-single-page="true"
           class="fr mt20 mb20"
           @current-change="handleCurrentChange"
           @size-change="handleSizeChange"

@@ -28,7 +28,7 @@ const routers = [
 	{
 		path: '/user',
 		name: "user",
-		component: () => import('./pages/user/index.vue'),
+		component: () => import('./pages/user/default.vue'),
 		meta: {
 			index: 0,
 			title: "用户登录"
@@ -37,7 +37,7 @@ const routers = [
 			{
 				path: '/user/upload',
 				name: "user-upload",
-				component: () => import( /* webpackChunkName: "upload" */'./pages/user/uploads.vue'),
+				component: () => import( /* webpackChunkName: "upload" */'./pages/user/file-list.vue'),
 				meta: {
 					index: 0,
 					title: "外宣推送"
@@ -53,14 +53,14 @@ const routers = [
 				},
 			},
 			{
-                path: '/user/transcode',
-                name: "user-transcode",
-                component: () => import( /* webpackChunkName: "upload" */'./pages/user/transcode.vue'),
-                meta: {
-                    index: 0,
-                    title: "转码管理"
-                },
-            },
+				path: '/user/transcode',
+				name: "user-transcode",
+				component: () => import( /* webpackChunkName: "upload" */'./pages/user/trans-code.vue'),
+				meta: {
+					index: 0,
+					title: "转码管理"
+				},
+			},
 		]
 	},
 	{
@@ -90,24 +90,24 @@ const routers = [
 					title: "外宣站点设置"
 				},
 			},
-            {
-                path: '/manage/site',
-                name: "manage-site",
-                component: () => import( /* webpackChunkName: "upload" */'./pages/manage/set-site.vue'),
-                meta: {
-                    index: 0,
-                    title: "编辑下载站点设置"
-                }
-            },
-            {
-                path: '/manage/trans',
-                name: "manage-trans",
-                component: () => import( /* webpackChunkName: "upload" */'./pages/manage/trans-site.vue'),
-                meta: {
-                    index: 0,
-                    title: "编辑下载站点设置"
-                }
-            },
+			{
+				path: '/manage/site',
+				name: "manage-site",
+				component: () => import( /* webpackChunkName: "upload" */'./pages/manage/set-site.vue'),
+				meta: {
+					index: 0,
+					title: "编辑下载站点设置"
+				}
+			},
+			{
+				path: '/manage/trans',
+				name: "manage-trans",
+				component: () => import( /* webpackChunkName: "upload" */'./pages/manage/trans-site.vue'),
+				meta: {
+					index: 0,
+					title: "编辑下载站点设置"
+				}
+			},
 			{
 				path: '/manage/admin',
 				name: "manage-admin",
@@ -138,10 +138,6 @@ const routers = [
 		]
 	}
 ]
-const routerPush = Router.prototype.push
-Router.prototype.push = function push(location) {
-    return routerPush.call(this, location).catch(error=> error)
-}
 
 export default new Router({
 	routes: routers

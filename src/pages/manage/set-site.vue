@@ -1,9 +1,10 @@
 <template>
-  <div class="flex fd-c h-all w-all">
-    <div class="h-45 bb flex">
+  <div class="w-all bc-fff ra-4 pl10 pr10 pb10 sha-7">
+    <div class="pt10 flex pb10">
+      <el-button @click="isModel=true;" icon="iconfont icontianjia" size="small">新增</el-button>
     </div>
-    <div class="pl10 pb10 pt10">
-      <table class="table">
+    <div class="sha-3 mt5">
+      <table class="table w-all">
         <thead>
           <tr>
             <td class="w-10">
