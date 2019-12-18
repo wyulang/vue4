@@ -157,7 +157,8 @@ body {
     color: #888;
   }
   tbody tr td {
-    padding: 9px 10px;
+    padding: 11px 10px;
+    border-bottom: 1px solid #f2f2f2;
   }
   tbody tr {
     color: #555;
