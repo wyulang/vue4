@@ -281,10 +281,13 @@ export default {
         api.get("sys/deleteDepart", { id: data.id }).then(res => {
           if (res.code == 2000) {
             this.$message.success("部门删除成功！");
-            const parent = node.parent;
-            const children = parent.data.children || parent.data;
-            const index = children.findIndex(d => d.id === data.id);
-            children.splice(index, 1);
+            // const parent = node.parent;
+            // const children = parent.data.children || parent.data;
+            // const index = children.findIndex(d => d.id === data.id);
+            // children.splice(index, 1);
+              this.initData();
+          }else {
+              this.$message.error(res.message);
           }
         });
       }

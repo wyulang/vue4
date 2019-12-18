@@ -1,7 +1,7 @@
 <template>
   <div class="w-all bc-fff ra-4 pl10 pr10 pb10 sha-7">
     <div class="pt10 flex pb10">
-      <el-button @click="isModel=true;" icon="iconfont icontianjia" size="small">新增</el-button>
+      <!--<el-button @click="isModel=true;" icon="iconfont icontianjia" size="small">新增</el-button>-->
     </div>
     <div class="sha-3 mt5">
       <table class="table w-all">
