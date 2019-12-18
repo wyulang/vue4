@@ -32,11 +32,7 @@
               <td>{{item.fileSize | fileSize}}</td>
               <td>{{item.createDate| date('YYYY-MM-DD hh:mm:ss')}}</td>
               <td class="w-150">
-                <div @click="btnAdd(item)" class="flex-line active ai-c hand mr10">
-                  <span class="iconfont fs-14 mr2 iconbianji hand "></span>
-                  <span>编辑</span>
-                </div>
-                <div @click="btnDelete([item.id])" class="flex-line active ai-c hand mr10">
+                <div @click="deleteFiles(item)" class="flex-line active ai-c hand mr10">
                   <span class="iconfont fs-14 mr2 iconshanchu hand "></span>
                   <span>删除</span>
                 </div>
@@ -83,6 +79,16 @@ export default {
     }
   },
   methods: {
+    deleteFiles(item) {
+      this.$confirm("确定要删除吗！").then(res => {
+        api.post("sys/transcodeDel", {
+          id: item.id
+        }).then(res => {
+          this.$message.success("删除成功");
+          this.initData();
+        });
+      });
+    },
     handleSizeChange(val) {
       this.query.pageSize = val;
       // console.log(`每页 ${val} 条`);

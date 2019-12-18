@@ -41,7 +41,7 @@
 import api from "../../store/api.js";
 import { mapState } from "vuex";
 export default {
-  props:['uploadType'],
+  props: ['uploadType'],
   data() {
     return {
       fileTypes: {
@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     isCodeUpload(e) {
-      if (!this.ftpCode.length&&this.uploadType==0) {
+      if (!this.ftpCode.length && this.uploadType == 0) {
         this.$message.error("请先选择上传平台");
         e.stopPropagation();
         window.event.returnValue = false
@@ -211,10 +211,17 @@ export default {
       return uuid;
     },
     onFileAdded(file) {
-      if (!this.ftpCode.length&&this.uploadType==0) {
+      if (!this.ftpCode.length && this.uploadType == 0) {
         this.$message.error("请先选择上传平台");
         file.ignored = true;
-      } else {
+      } else if (this.uploadType == 1) {
+        let formet = ['.asx', '.asf', '.mpg', '.wmv', '.3gp', '.mp4', '.mov', '.avi', '.flv'];
+        if (!formet.includes(file.name.substring(file.name.lastIndexOf('.')).toLocaleLowerCase())) {
+          this.$message.error("请上传视频或音频文件");
+          file.ignored = true;
+        }
+      }
+      else {
         this.options.query.ftpCode = this.ftpCode.toString();
         this.options.query.userId = this.storage("userinfo").id;
         this.options.query.guid = this.uuid();
