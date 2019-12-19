@@ -14,6 +14,8 @@ class webapi extends baseApi {
       env = "me"
     } else if (url.indexOf('6006') > 0) {
       env = "inte"
+    } else if (url.indexOf('vue4.0') > 0) {
+      env = "inte"
     }
     return env;
   }
