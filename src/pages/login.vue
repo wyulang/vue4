@@ -49,7 +49,7 @@ export default {
         if (res.code == 2000) {
           this.storage("userinfo", res.data);
           if (res.data.role == 0) {
-            this.$router.push({ name: "manage-custom" });
+            this.$router.push({ name: "manage-dashboard" });
           } else {
             this.$router.push({ name: "user-upload" });
           }

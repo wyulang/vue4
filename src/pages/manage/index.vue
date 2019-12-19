@@ -52,13 +52,14 @@ export default {
     return {
       user: this.storage('userinfo'),
       menu: [
-        { title: "用户管理", path: "manage-custom", icon: "iconyonghu2", index: 0 },
-        { title: "外宣站点设置", path: "manage-net", icon: "iconqiu", index: 1 },
-        { title: '编辑下载站点设置', path: 'manage-site', icon: 'iconzhandian', index: 2 },
-        { title: '转码站点设置', path: 'manage-trans', icon: 'iconzhuanmaguanli', index: 3 },
-        { title: '下载统计', path: 'manage-download', icon: 'iconLC_icon_download_fill', index: 4 },
+        { title: "首页", path: "manage-dashboard", icon: "iconyonghu2", index: 0 },
+        { title: "用户管理", path: "manage-custom", icon: "iconyonghu2", index: 1 },
+        { title: "外宣站点设置", path: "manage-net", icon: "iconqiu", index: 2 },
+        { title: '编辑下载站点设置', path: 'manage-site', icon: 'iconzhandian', index: 3 },
+        { title: '转码站点设置', path: 'manage-trans', icon: 'iconzhuanmaguanli', index: 4 },
+        { title: '下载统计', path: 'manage-download', icon: 'iconLC_icon_download_fill', index: 5 },
         // { title: '字典数据', path: 'manage-diction', icon: 'icon-dingdan', index: 4 },
-        { title: "退出登录", path: "clear", icon: "icontuichu2", index: 5 }
+        { title: "退出登录", path: "clear", icon: "icontuichu2", index: 6 }
       ]
     }
   },

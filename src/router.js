@@ -72,6 +72,15 @@ const routers = [
 			title: "后端首页"
 		},
 		children: [
+            {
+                path: '/manage/dashboard',
+                name: "manage-dashboard",
+                component: () => import( /* webpackChunkName: "upload" */'./pages/manage/dashboard.vue'),
+                meta: {
+                    index: 0,
+                    title: "dashboard"
+                },
+            },
 			{
 				path: '/manage/custom',
 				name: "manage-custom",
