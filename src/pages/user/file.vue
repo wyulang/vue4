@@ -20,7 +20,7 @@
     </div>
 
     <div class="w-all mt10">
-      <el-tree ref="ftree" :default-expanded-keys="[0,1]" :data="list" node-key="id" class="sha-b">
+      <el-tree ref="ftree" :default-expanded-keys="[0,1]" :data="list" node-key="id" class="sha-b" lazy>
         <div class="w-all ai-c rel bb-fe flex mt3" slot-scope="{ node, data }">
           <div class="flex-1 ml10">
             <span :class="{'iconfile1':data.file,'iconwenjianjia fc-fc6':!data.file}" class="iconfont"></span>
