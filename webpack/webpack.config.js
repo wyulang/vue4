@@ -30,6 +30,13 @@ const vueLoader = {
       hmr: TARGET == 'build', // 仅dev环境启用HMR功能
     }
   },
+  pack: {
+    loader: MiniCssExtractPlugin.loader,
+    options: {
+      publicPath: '../',
+      hmr: TARGET == 'build', // 仅dev环境启用HMR功能
+    }
+  },
   dll: MiniCssExtractPlugin.loader,
 };
 

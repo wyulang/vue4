@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node ./webpack/server.js",
     "build": "node ./webpack/build.js",
-    "dll": "webpack --progress --config webpack/webpack.dll.js ---"
+    "dll": "webpack --progress --config webpack/webpack.dll.js ---",
+    "pack":"webpack --progress --config webpack/webpack.prod.js ---"
   },
   "author": "",
   "license": "ISC",
