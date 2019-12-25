@@ -277,7 +277,8 @@ export default {
         loading.close();
         if (res.code == 2000) {
           this.list = res.data[0].ftpFile;
-            setTimeout(() => {
+          this.recursion(this.list, true);
+          setTimeout(() => {
                 this.baseList = JSON.parse(JSON.stringify(this.list));
             }, 300);
           /*this.recursion(this.list, true);
@@ -346,14 +347,16 @@ export default {
             return resolve([])
             // 这里resolve的数据是后台给的,id用于之后点击发起请求时的参数
         } else {
-            this.getTreeChild(node.data.pathName,node.data.fileName, resolve)
+            this.getTreeChild(node.data, resolve)
         }
     },
-    getTreeChild(pathName,fileName, resolve) {
-        api.post("sys/findFileList", { userId: this.user.id,ftpPath: pathName+"/",
-            fileName: fileName, }).then(res => {
+    getTreeChild(data, resolve) {
+        api.post("sys/findFileList", { userId: this.user.id,ftpPath: data.pathName+"/",
+            fileName: data.fileName, }).then(res => {
             if (res.code == 2000) {
                 this.childrenList = res.data[0].ftpFile;
+                data.ftpFile = res.data[0].ftpFile;
+                this.recursion(this.childrenList, true)
                 return resolve(this.childrenList);
             }
         });
