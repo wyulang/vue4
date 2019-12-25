@@ -27,7 +27,7 @@
               </td>
               <td>{{item.fileName}}</td>
               <td>{{item.username}}</td>
-              <td>{{item.taskStatus=='1'?'成功':(item.taskStatus=='2'?'失败':'进行中')}}</td>
+              <td>{{item.taskStatus=='1'?'成功':(item.taskStatus=='2'?'失败':(item.taskStatus=='3'?'暂不支持转码':'进行中'))}}</td>
               <td>{{item.taskEfficiency}}</td>
               <td>{{item.fileSize | fileSize}}</td>
               <td>{{item.createDate| date('YYYY-MM-DD hh:mm:ss')}}</td>

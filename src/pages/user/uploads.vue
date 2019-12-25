@@ -215,7 +215,7 @@ export default {
         this.$message.error("请先选择上传平台");
         file.ignored = true;
       } else if (this.uploadType == 1) {
-        let formet = ['.asx', '.asf', '.mpg', '.wmv', '.3gp', '.mp4', '.mov', '.avi', '.flv'];
+        let formet = ['.asx', '.asf', '.mpg', '.wmv', '.3gp', '.mp4', '.mov', '.avi', '.flv','.mp3','.wav','.mpeg'];
         if (!formet.includes(file.name.substring(file.name.lastIndexOf('.')).toLocaleLowerCase())) {
           this.$message.error("请上传视频或音频文件");
           file.ignored = true;
