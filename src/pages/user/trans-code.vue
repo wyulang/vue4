@@ -1,8 +1,9 @@
 <template>
   <div class='w-all'>
     <div class="w-all bc-fff ra-4 pl10 pr10 pb10 sha-7 ">
-      <div class="pt10 flex pb10">
+      <div class="pt10 flex pb10" >
         <el-button @click="$store.state.isTrans=true;" type="primary" icon="iconfont icontianjia" size="small">添加转码任务</el-button>
+        <span class="fc-000 pp10 fs-14 fb" >本工具支持音、视频文件转码：*音频文件支持上传ogg.mp3.wma.midi.wav,转码后输出wav文件;*视频文件支持上传vob (DVD格).mpg .mpeg  .mp4 .3gp .mov .rm  .rmvb .wmv .asf.avi.asx,转码后输出MP4文件;</span>
       </div>
       <div class="sha-3 mt5">
         <table class="table w-all">

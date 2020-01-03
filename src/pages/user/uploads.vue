@@ -40,6 +40,7 @@
 <script>
 import api from "../../store/api.js";
 import { mapState } from "vuex";
+import { Message } from 'element-ui';
 export default {
   props: ['uploadType'],
   data() {
@@ -166,6 +167,9 @@ export default {
           fileSize: file.size,
           fileUrl: data.data
         });
+      }else if(data.code == 4405){
+          Message.error(data.message || this.errorMess);
+          window.location.href = "#/"
       }
 
       if (data.data.isMerge) {
@@ -220,12 +224,11 @@ export default {
           this.$message.error("请上传视频或音频文件");
           file.ignored = true;
         }
-      }
-      else {
+      }else {
         this.options.query.ftpCode = this.ftpCode.toString();
-        this.options.query.userId = this.storage("userinfo").id;
-        this.options.query.guid = this.uuid();
       }
+      this.options.query.userId = this.storage("userinfo").id;
+      this.options.query.guid = this.uuid();
     }
   },
   created() {

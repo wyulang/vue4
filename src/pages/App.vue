@@ -27,7 +27,7 @@ body {
     border-right: 0 !important;
   }
 .menu-config {
-  
+
   .menu-config-title {
     background-color: #1b2737;
     border-bottom: 1px solid #000;
@@ -142,7 +142,7 @@ body {
   background-color: #78a7ff;
 }
 .bc-bs10 {
-  background-color: #1976d2;
+  background-color: #0919d2;
 }
 .bc-bs11 {
   background-color: #2487e8;
