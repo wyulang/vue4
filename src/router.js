@@ -46,7 +46,7 @@ const routers = [
 			{
 				path: '/user/file',
 				name: "user-file",
-				component: () => import( /* webpackChunkName: "upload" */'./pages/user/file.vue'),
+				component: () => import( /* webpackChunkName: "upload" */'./pages/user/file-new.vue'),
 				meta: {
 					index: 0,
 					title: "编辑下载"
