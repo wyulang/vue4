@@ -1,6 +1,6 @@
 <template>
     <div class="w-all">
-        <div class="flex ai-c sha-b pp10 mt10">
+        <div class="flex ai-c sha-b pp10 ra-3 bc-fff">
             <span class="wi-60">时间排序：</span>
             <div class="flex fc-aaa fd-c">
                 <span @click="setQuery(0,1)" :class="{'file-active':query.timesort==1,'fc-ccc':query.timesort==2}" class="iconfont hand iconpaixushang"></span>
@@ -19,7 +19,7 @@
             <el-button size="small" @click="resetSerch" class="ml20" type="primary">重置</el-button>
         </div>
 
-        <div class="w-all mt10">
+        <div class="w-all ra-3 mt10">
             <el-tree ref="ftree"  :data="list" node-key="id" class="sha-b" lazy :load="loadNode" :props="props">
                 <div class="w-all ai-c rel bb-fe flex mt3" slot-scope="{ node, data }">
                     <div class="flex-1 ml10">
@@ -265,15 +265,10 @@
                 }
             },
             initData() {
-                const loading = this.$loading({
-                    lock: true,
-                    text: "Loading",
-                    spinner: "el-icon-loading",
-                    background: "rgba(0, 0, 0, 0.7)"
-                });
+                this.spinner.show();
                 api.post("sys/findFileList", { userId: this.user.id,ftpPath: "/",
                     fileName: "/", }).then(res => {
-                    loading.close();
+                    this.spinner.close();
                     if (res.code == 2000) {
                         this.list = res.data[0].ftpFile;
                         this.recursion(this.list, true);
