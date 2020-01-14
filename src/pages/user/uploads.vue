@@ -189,6 +189,7 @@ export default {
               setTimeout(v => {
                 file.cancel();
               });
+              // this.$store.commit('setUpload',false);
             }
           });
       }
@@ -199,6 +200,7 @@ export default {
         setTimeout(v => {
           file.cancel();
         });
+        // this.$store.commit('setUpload',false);
       }
     },
     uuid() {
