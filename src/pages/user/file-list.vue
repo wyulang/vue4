@@ -31,6 +31,7 @@
               <td>文件名</td>
               <td>上传时间</td>
               <td>文件大小</td>
+              <td>是否上传成功</td>
               <td class="w-150" v-if="query.role==1">操作</td>
             </tr>
           </thead>
@@ -46,11 +47,16 @@
               <td>{{item.fileName}}</td>
               <td>{{item.createDate | date('YYYY-MM-DD hh:mm:ss')}}</td>
               <td>{{item.fileSize | fileSize}}</td>
+              <td>{{item.isUploadSucess=='0'?'上传中':(item.isUploadSucess=='1'?'成功':'失败')}}</td>
               <td v-if="query.role==1" class="w-150">
                 <div @click="deleteFiles(item)" class="flex-line active ai-c hand mr10">
                   <span class="iconfont fs-14 mr2 iconshanchu1 hand "></span>
                   <span>删除</span>
                 </div>
+                <!--<div v-if="item.isUploadSucess =='2'" @click="deleteFiles(item)" class="flex-line active ai-c hand mr10">
+                  <span class="iconfont fs-14 mr2 iconshangchuan hand "></span>
+                  <span>重新上传</span>
+                </div>-->
               </td>
             </tr>
           </tbody>
