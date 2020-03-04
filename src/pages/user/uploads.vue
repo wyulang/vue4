@@ -137,11 +137,11 @@ export default {
       return dal;
     },
     initData() {
-      api.get("sys/getCustomerList", {
+      /*api.get("sys/getCustomerList", {
         userId: this.storage("userinfo").id
       }).then(res => {
         this.dianList = res.data;
-      });
+      });*/
       api.get("sys/ftpCustomerList", { type: "0" }).then(res => {
         this.ftplist = res.data;
       });
