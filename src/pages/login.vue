@@ -28,7 +28,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions([""]),
     goindex() {
       if (this.user.username.length < 2) {
         this.$message.error("请输入用户名");
