@@ -85,7 +85,7 @@
         <div class="flex ai-c mb20">
           <span class="w-90">部门：</span>
           <!--<el-input v-model="user.departmentName"></el-input>-->
-          <el-select v-model="user.departmentId">
+          <el-select v-model="user.departmentId" style="width: 100%">
             <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id">
             </el-option>
           </el-select>
