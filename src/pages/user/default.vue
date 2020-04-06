@@ -126,8 +126,8 @@ export default {
       user: this.storage('userinfo'),
       menu: [
         { title: "我的文件", path: "user-upload", icon: "iconwenjianjia", index: 0 },
-        { title: "编辑下载", path: "user-file", icon: "iconic_edit", index: 1 },
-        { title: '转码管理', path: 'user-transcode', icon: 'iconzhandian', index: 2 },
+        { title: "文件下载", path: "user-file", icon: "iconic_edit", index: 1 },
+        { title: '文件上传', path: 'user-transcode', icon: 'iconzhandian', index: 2 },
         { title: "退出登录", path: "clear", icon: "icontuichu2", index: 3 }
       ],
       user: this.storage("userinfo"),
