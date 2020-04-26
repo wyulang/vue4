@@ -31,8 +31,8 @@
                   <td class="wb-1">
                     <el-checkbox :value="selectList.length==list.length&&selectList.length>0" @change="v=>{v?(selectList=list.map(d=>{return d.id})):(selectList=[])}"></el-checkbox>
                   </td>
-                  <td>昵称</td>
                   <td>用户名</td>
+                  <td>登录名</td>
                   <td>注册时间</td>
                   <td>上次登录时间</td>
                   <td>上次登录IP</td>
@@ -71,7 +71,7 @@
     <el-dialog title="用户" :center="true" width="400px" :append-to-body="true" :visible.sync="isModel">
       <div class="w-all">
         <div class="flex ai-c mb20">
-          <span class="w-90">昵称：</span>
+          <span class="w-90">用户名：</span>
           <el-input v-model="user.loginName" placeholder="请输入昵称"></el-input>
         </div>
         <div class="flex ai-c mb20">
@@ -214,7 +214,7 @@ export default {
     },
     btnAdd() {
       if (!this.user.loginName.length) {
-        this.$message.error("请输入昵称");
+        this.$message.error("请输入用户名");
         return;
       }
       if (!this.user.password || this.user.password.length < 5) {
