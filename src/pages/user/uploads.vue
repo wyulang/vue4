@@ -169,13 +169,14 @@ export default {
       }
 
       if (data.data.isMerge) {
+          let type = this.uploadType=='1'?'2':'0';
         api
           .post("sys/merge", {
             ftpCode: this.ftpCode.toString(),
             fileName: file.name,
             userId: this.storage("userinfo").id,
             guid: data.data.guid,
-            type: this.uploadType
+            type: type
           })
           .then(res => {
             if (res.code == 2000) {
