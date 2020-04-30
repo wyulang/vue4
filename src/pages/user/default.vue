@@ -100,7 +100,7 @@
     </div>
 
     <upload :uploadType="0" v-show="isUpload"></upload>
-    <upload :uploadType="2" v-show="isTrans"></upload>
+    <upload :uploadType="1" v-show="isTrans"></upload>
   </div>
 </template>
 

@@ -126,11 +126,7 @@ export default {
       };
       let dal = "iconfile";
       for (let item in this.fileTypes) {
-        if (
-          this.fileTypes[item].includes(
-            type.replace(/.+\./g, "").toLocaleLowerCase()
-          )
-        ) {
+        if (this.fileTypes[item].includes(type.replace(/.+\./g, "").toLocaleLowerCase())) {
           dal = item == "image" ? "image" : types[item];
         }
       }
@@ -173,13 +169,14 @@ export default {
       }
 
       if (data.data.isMerge) {
+          let type = this.uploadType=='1'?'2':'0';
         api
           .post("sys/merge", {
             ftpCode: this.ftpCode.toString(),
             fileName: file.name,
             userId: this.storage("userinfo").id,
             guid: data.data.guid,
-            type: this.uploadType
+            type: type
           })
           .then(res => {
             if (res.code == 2000) {
@@ -221,7 +218,8 @@ export default {
         this.$message.error("请先选择上传平台");
         file.ignored = true;
       } else if (this.uploadType == 1) {
-        let formet = ['.asx', '.asf', '.mpg', '.wmv', '.3gp', '.mp4', '.mov', '.avi', '.flv','.mp3','.wav','.mpeg'];
+        // let formet = ['.asx', '.asf', '.mpg', '.wmv', '.3gp', '.mp4', '.mov', '.avi', '.flv','.mp3','.wav','.mpeg'];
+        let formet = ['.ogg','.mp3','.wma','.midi','.wav','.ob','.mpg', '.mpeg','.mp4','.3gp','.mov','.rm', '.rmvb','.wmv','.asf','.avi','.asx','.txt','.jpg','.png','.tga']
         if (!formet.includes(file.name.substring(file.name.lastIndexOf('.')).toLocaleLowerCase())) {
           this.$message.error("请上传视频或音频文件");
           file.ignored = true;

@@ -8,8 +8,8 @@
               <el-checkbox></el-checkbox>
             </td>
             <td>文件名</td>
-            <td>用户名</td>
             <td>登录名</td>
+            <td>用户名</td>
             <td>下载时间</td>
             <td>操作</td>
           </tr>
