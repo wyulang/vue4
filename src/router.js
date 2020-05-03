@@ -60,7 +60,15 @@ const routers = [
 					index: 0,
 					title: "转码管理"
 				},
-			},
+			},{
+                path: '/user/notice',
+                name: "user-notice",
+                component: () => import( /* webpackChunkName: "upload" */'./pages/user/notice.vue'),
+                meta: {
+                    index: 0,
+                    title: "我的消息"
+                },
+            }
 		]
 	},
 	{

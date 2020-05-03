@@ -141,7 +141,7 @@ export default {
     },
     initData() {
       this.spinner.show();
-      api.get("sys/fileList", this.query).then(res => {
+      api.post("sys/fileList", this.query).then(res => {
         this.spinner.close();
         this.list = res.data.list;
         this.total = res.data.total;

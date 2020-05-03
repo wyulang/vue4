@@ -129,9 +129,10 @@ export default {
       user: this.storage('userinfo'),
       menu: [
         { title: "我的文件", path: "user-upload", icon: "iconwenjianjia", index: 0 },
-        { title: "文件下载", path: "user-file", icon: "iconic_edit", index: 1 },
-        { title: '文件上传', path: 'user-transcode', icon: 'iconzhandian', index: 2 },
-        { title: "退出登录", path: "clear", icon: "icontuichu2", index: 3 }
+        { title: "文件下载", path: "user-file", icon: "iconLC_icon_download_fill", index: 1 },
+        { title: '文件上传', path: 'user-transcode', icon: 'iconzhuanmaguanli', index: 2 },
+        { title: '我的消息', path: 'user-notice', icon: 'iconmessage', index: 3 },
+        { title: "退出登录", path: "clear", icon: "icontuichu2", index: 4 }
       ],
       user: this.storage("userinfo"),
       isModel: false,
@@ -229,7 +230,7 @@ export default {
       var data = eval("(" + e.data + ")"); //解析对象
       if(data.cmd == "topic"){
         //系统通知
-        // this.loadData();
+        this.initData();
       }else if(data.cmd == "user"){
         //用户消息
         // this.loadData();
@@ -285,11 +286,21 @@ export default {
         }
       }
     },
+    initData(){
+        api.get("sys/notice/count/0").then(res=>{
+            if (res.code == 2000) {
+                console.log(res.data.list)
+                console.log(res.data.count)
+            }
+        });
+    }
   },
   created() {
+    this.initData();
     if (!this.storage("userinfo")) {
       this.$router.push({ name: "login" });
     }
+
   }
 }
 </script>
