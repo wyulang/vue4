@@ -41,7 +41,7 @@
               <el-popover placement="bottom" width="200" trigger="click">
                 <div class="w-all flex fd-c">
                   <div v-for="(item, index) in list" :key="index" class="flex mb10 fd-c">
-                    <span class="fc-333 line-1 w-all">{{item.sysAnnouncement.msgContent}}</span>
+                    <span class="fc-333 line-1 w-all"><a @click="readMessage(item)">{{item.sysAnnouncement.titile}}</a></span>
                     <span class="fc-999 fs-12">{{item.sysAnnouncement.sendTime}}</span>
                   </div>
                   <div class="flex jc-e"><span @click="$router.push({name:'user-notice'})" class="fc-a hand">更多</span></div>
@@ -112,7 +112,15 @@
         </div>
       </div>
     </div>
+    <el-dialog title="消息" :center="true" width="400px" :append-to-body="true" :visible.sync="isMessageModel">
+      <div class="w-all">
+        <div class="flex mb10 fd-c">
+          <span class="fc-333 line-1 w-all">{{titile}}</span>
+          <span class="fc-999 fs-12">{{sendTime}}</span>
+        </div>
 
+      </div>
+    </el-dialog>
     <upload :uploadType="0" v-show="isUpload"></upload>
     <upload :uploadType="1" v-show="isTrans"></upload>
   </div>
@@ -151,6 +159,7 @@ export default {
       user: this.storage("userinfo"),
       isModel: false,
       isFile: true,
+      isMessageModel: false,
       rules: {
         oldPsd: [{ required: true, message: "请输入密码" }],
         newPsd: [{ required: true, message: "请输入新密码" }],
@@ -158,6 +167,8 @@ export default {
           { required: true, validator: validatePass2, trigger: "blur" }
         ]
       },
+      titile:'',
+      sendTime:'',
       ruleForm: {},
       websock: null,
       lockReconnect: false,
@@ -251,7 +262,7 @@ export default {
         this.initData();
       } else if (data.cmd == "user") {
         //用户消息
-        // this.loadData();
+        this.initData();
       }
       //心跳检测重置
       this.heartCheck.reset().start();
@@ -309,6 +320,19 @@ export default {
         if (res.code == 2000) {
           this.noticeCount = res.data.count;
           this.list = res.data.list;
+        }
+      });
+    },
+    readMessage(item){
+      this.isMessageModel = true;
+      this.sendTime = item.sysAnnouncement.sendTime;
+      this.titile = item.sysAnnouncement.titile;
+      let id = item.id;
+      api.get("sys/notice/read/"+id).then(res => {
+        if (res.code == 2000) {
+          /*this.noticeCount = 0;
+          this.list = [];*/
+          this.initData();
         }
       });
     }

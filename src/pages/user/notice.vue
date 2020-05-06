@@ -17,6 +17,9 @@
       <el-button @click="initData()" size="small" type="primary">搜索</el-button>
     </div>
     <div class="w-all bc-fff ra-4 pl10 pr10 pb10 sha-7 mt10 pt10">
+      <div class="pt10 flex pb10">
+        <el-button @click="readNoticeAll" icon="iconfont fs-13 mr5 iconread_all" size="small">全部标注已读</el-button>
+      </div>
       <div class="sha-3 mt5">
         <table class="table w-all">
           <thead>
@@ -99,6 +102,13 @@ export default {
               self.dataProcess(item)
           }
         })*/
+      });
+    },
+    readNoticeAll(){
+      api.get("sys/notice/readAll/").then(res => {
+        if (res.code == 2000) {
+          this.initData();
+        }
       });
     }
   },
