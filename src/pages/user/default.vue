@@ -2,7 +2,7 @@
   <div class='w-all wi-1000 ff h-all'>
     <section class="w-all h-all flex">
       <section class="w-220 bc-bs1 hi-100">
-        <div class="h-45 bc-bs11 flex fc-fff ai-c jc-s">
+        <div class="h-55 bc-bs11 flex fc-fff ai-c jc-s">
           <span class="iconfont fs-20 mr10 fc-fff pl20 iconwenjianguanli"></span><span class="fs-14">传媒之窗</span>
         </div>
         <div class="mt5">
@@ -28,7 +28,7 @@
         </div>
       </section>
       <section class="flex-1 h-all fd-c flex">
-        <div class="h-45 bc-bs10 flex ai-c jc-b">
+        <div class="h-55 bc-bs10 flex ai-c jc-b">
           <div class="flex ai-c">
             <div @click="$store.state.isUpload=true;" class="flex ai-c fc-fff hand ml10">
               <span class="iconfont iconshangchuan mr5"></span>
@@ -36,13 +36,27 @@
             </div>
           </div>
           <div class="mr10 flex ai-c">
+            <!-- 信息条数  v-if="noticeCount>0"-->
+            <el-badge v-if="noticeCount>0" :value="noticeCount" class="mr25">
+              <el-popover placement="bottom" width="200" trigger="click">
+                <div class="w-all flex fd-c">
+                  <div v-for="(item, index) in list" :key="index" class="flex mb10 fd-c">
+                    <span class="fc-333 line-1 w-all">{{item.sysAnnouncement.msgContent}}</span>
+                    <span class="fc-999 fs-12">{{item.sysAnnouncement.sendTime}}</span>
+                  </div>
+                  <div class="flex jc-e"><span @click="$router.push({name:'user-notice'})" class="fc-a hand">更多</span></div>
+                </div>
+                <div slot="reference"><span class="iconfont icontongzhitz hand fc-fff fs-18"></span></div>
+              </el-popover>
+            </el-badge>
             <span class="iconfont iconiconfontmyfill fc-fff fs-22 mr5"></span>
             <el-dropdown class="outline" @command="handleCommand">
               <span class="fc-fff outline fs-18 hand">
-                {{user.loginName}}<i class="iconfont iconpaixu- fs-12 ml5"></i>
+                {{user.loginName}}<i class="iconfont iconpaixu- fs-12 ml8"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="1">密码修改</el-dropdown-item>
+                <el-dropdown-item command="2">退出</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -112,7 +126,7 @@ import io from 'socket.io-client'
 import url from "less/lib/less/tree/url";
 
 export default {
-  components:{
+  components: {
     upload
   },
   data() {
@@ -146,12 +160,14 @@ export default {
       },
       ruleForm: {},
       websock: null,
-      lockReconnect:false,
-      heartCheck:null
+      lockReconnect: false,
+      heartCheck: null,
+      noticeCount: 0,
+      list: []
     }
   },
   computed: {
-    ...mapState(["downloadFile",'isUpload','isTrans'])
+    ...mapState(["downloadFile", 'isUpload', 'isTrans'])
   },
   mounted() {
     this.initWebSocket();
@@ -163,6 +179,9 @@ export default {
         this.isModel = true;
         this.ruleForm = {};
         this.ruleForm.id = this.user.id;
+      }
+      if (val == "2") {
+        this.$router.push({ name: 'login' })
       }
     },
     menuSelect(value) {
@@ -208,8 +227,8 @@ export default {
     initWebSocket() {
       // WebSocket与普通的请求所用协议有所不同，ws等同于http，wss等同于https
       var userId = this.user.id;
-      var url = api.getDomainApi().replace("https://","wss://").replace("http://","ws://")+"/ws/"+userId;
-      console.log(url);
+      var url = api.getDomainApi().replace("https://", "wss://").replace("http://", "ws://") + "/ws/" + userId;
+      // console.log(url);
       this.websock = new WebSocket(url);
       this.websock.onopen = this.websocketOnopen;
       this.websock.onerror = this.websocketOnerror;
@@ -226,12 +245,11 @@ export default {
       this.reconnect();
     },
     websocketOnmessage(e) {
-      console.log("-----接收消息-------",e.data);
-      var data = eval("(" + e.data + ")"); //解析对象
-      if(data.cmd == "topic"){
+      let data = JSON.parse(e.data);
+      if (data.cmd == "topic") {
         //系统通知
         this.initData();
-      }else if(data.cmd == "user"){
+      } else if (data.cmd == "user") {
         //用户消息
         // this.loadData();
       }
@@ -251,7 +269,7 @@ export default {
     },
     reconnect() {
       var that = this;
-      if(that.lockReconnect) return;
+      if (that.lockReconnect) return;
       that.lockReconnect = true;
       //没连接上会一直重连，设置延迟避免请求过多
       setTimeout(function () {
@@ -260,21 +278,21 @@ export default {
         that.lockReconnect = false;
       }, 5000);
     },
-    heartCheckFun(){
+    heartCheckFun() {
       var that = this;
       //心跳检测,每20s心跳一次
       that.heartCheck = {
         timeout: 20000,
         timeoutObj: null,
         serverTimeoutObj: null,
-        reset: function(){
+        reset: function () {
           clearTimeout(this.timeoutObj);
           //clearTimeout(this.serverTimeoutObj);
           return this;
         },
-        start: function(){
+        start: function () {
           var self = this;
-          this.timeoutObj = setTimeout(function(){
+          this.timeoutObj = setTimeout(function () {
             //这里发送一个心跳，后端收到后，返回一个心跳消息，
             //onmessage拿到返回的心跳就说明连接正常
             that.websocketSend("HeartBeat");
@@ -286,13 +304,13 @@ export default {
         }
       }
     },
-    initData(){
-        api.get("sys/notice/count/0").then(res=>{
-            if (res.code == 2000) {
-                console.log(res.data.list)
-                console.log(res.data.count)
-            }
-        });
+    initData() {
+      api.get("sys/notice/count/0").then(res => {
+        if (res.code == 2000) {
+          this.noticeCount = res.data.count;
+          this.list = res.data.list;
+        }
+      });
     }
   },
   created() {

@@ -7,26 +7,29 @@ class webapi extends baseApi {
   constructor() {
     super();
   }
+
   getEnvName() {
     let env = 'prod';
-    let url = window.location.href;
-    if (url.indexOf('localhost') > 0) {
+    let url = window.location.hostname;
+    if (url.includes('localhost')) {
       env = "me"
-    } else if (url.indexOf('6006') > 0) {
-      env = "inte"
-    } else if (url.indexOf('vue4.0') > 0) {
-      env = "inte"
-    }
+    } else if (!isNaN(url.replace(/[\.]/g, ''))) {
+      env = "me"
+    } else if (url.includes('localhost')) {
+      env = 'me';
+    } else if (url.includes('vue4.0')) {
+      env = 'me';
+    } 
     return env;
   }
 
   prod = `http://${window.location.host}/`;
 
   ftp = {
-    me: 'http://localhost:8080/',
-    // me: 'http://47.100.197.169:8088/',
+    // me: 'http://localhost:8080/',
+    me: 'http://47.100.197.169:8088/',
     // me: 'http://118.24.198.193:8080/',
-    inte: 'http://118.24.198.193:8080/',
+    // inte: 'http://118.24.198.193:8080/',
     prod: this.prod,
   };
 

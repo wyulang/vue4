@@ -51,8 +51,7 @@ const routers = [
 					index: 0,
 					title: "编辑下载"
 				},
-			},
-			{
+			}, {
 				path: '/user/transcode',
 				name: "user-transcode",
 				component: () => import( /* webpackChunkName: "upload" */'./pages/user/trans-code.vue'),
@@ -60,15 +59,15 @@ const routers = [
 					index: 0,
 					title: "转码管理"
 				},
-			},{
-                path: '/user/notice',
-                name: "user-notice",
-                component: () => import( /* webpackChunkName: "upload" */'./pages/user/notice.vue'),
-                meta: {
-                    index: 0,
-                    title: "我的消息"
-                },
-            }
+			}, {
+				path: '/user/notice',
+				name: "user-notice",
+				component: () => import( /* webpackChunkName: "upload" */'./pages/user/notice.vue'),
+				meta: {
+					index: 0,
+					title: "我的消息"
+				},
+			}
 		]
 	},
 	{
@@ -80,15 +79,15 @@ const routers = [
 			title: "后端首页"
 		},
 		children: [
-            {
-                path: '/manage/dashboard',
-                name: "manage-dashboard",
-                component: () => import( /* webpackChunkName: "upload" */'./pages/manage/dashboard.vue'),
-                meta: {
-                    index: 0,
-                    title: "dashboard"
-                },
-            },
+			{
+				path: '/manage/dashboard',
+				name: "manage-dashboard",
+				component: () => import( /* webpackChunkName: "upload" */'./pages/manage/dashboard.vue'),
+				meta: {
+					index: 0,
+					title: "dashboard"
+				},
+			},
 			{
 				path: '/manage/custom',
 				name: "manage-custom",
