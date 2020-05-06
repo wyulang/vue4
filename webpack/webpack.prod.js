@@ -42,7 +42,7 @@ const webpackProdConfig = {
         clear: false,
         summary: false,
         customSummary: res => {
-          process.stderr.write(chalk.blueBright.bold(` 洪伟 build success use time ${res} \n`))
+          process.stderr.write(chalk.blueBright.bold(`build success use time ${res} \n`))
         }
       }
     ),
