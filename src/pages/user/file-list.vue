@@ -19,6 +19,7 @@
     <div class="w-all bc-fff ra-4 pl10 pr10 pb10 sha-7 mt10">
       <div class="pt10 flex pb10">
         <el-button @click="$store.state.isUpload=true;" icon="iconfont fs-13 mr5 iconshangchuan" size="small">外宣推送</el-button>
+        <el-button @click="deleteAllFile()" icon="iconfont fs-13 mr5 iconshanchu1" size="small">批量删除</el-button>
       </div>
       <div class="sha-3 mt5">
         <table class="table w-all">
@@ -108,14 +109,21 @@ export default {
   },
   methods: {
     deleteFiles(item) {
-      this.$confirm("确定要删除吗！").then(res => {
+      let _self = this;
+        _self.$confirm("确定要删除吗！").then(res => {
         api
           .post("sys/deleteFile", {
             id: item.id,
-            userId: this.query.userId
+            userId: _self.query.userId
           })
           .then(res => {
-            this.$message.error("删除成功");
+              if(res.code == 2000){
+                  _self.$message.info("删除成功");
+                  _self.initData();
+              }else {
+                  _self.$message.error(res.message);
+              }
+
           });
       });
     },
@@ -155,6 +163,27 @@ export default {
       this.query.pageNum = val;
       this.initData();
     },
+    deleteAllFile(){
+        let _self = this;
+        if(_self.selectList.length == 0){
+            _self.$message.warn("请至少选择一条记录");
+        }else {
+            _self.$confirm("确定要删除选中记录吗！").then(res => {
+                api.post("sys/deleteAllFile", {
+                        ids: _self.selectList.join(',')
+                    })
+                    .then(res => {
+                        if(res.code == 2000){
+                            _self.$message.info("删除成功");
+                            _self.initData();
+                        }else {
+                            _self.$message.error(res.message);
+                        }
+
+                    });
+            });
+        }
+    }
   },
   created() {
     this.initData();
