@@ -37,11 +37,11 @@
           </div>
           <div class="mr10 flex ai-c">
             <!-- 信息条数  v-if="noticeCount>0"-->
-            <el-badge v-if="noticeCount>0" :value="noticeCount" class="mr25">
+            <el-badge  :value="noticeCount" class="mr25">
               <el-popover placement="bottom" width="200" trigger="click">
                 <div class="w-all flex fd-c">
                   <div v-for="(item, index) in list" :key="index" class="flex mb10 fd-c">
-                    <span class="fc-333 line-1 w-all"><a @click="readMessage(item)">{{item.sysAnnouncement.titile}}</a></span>
+                    <span class="fc-333 line-1 w-all"><a @click="readMessage(item)" style="color: #409eff">{{item.sysAnnouncement.titile}}</a></span>
                     <span class="fc-999 fs-12">{{item.sysAnnouncement.sendTime}}</span>
                   </div>
                   <div class="flex jc-e"><span @click="$router.push({name:'user-notice'})" class="fc-a hand">更多</span></div>
