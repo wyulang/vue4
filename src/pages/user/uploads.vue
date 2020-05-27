@@ -69,6 +69,7 @@ export default {
       options: {
         target: "", // 目标上传 URL
         chunked: true,
+        singleFile: true,
         chunkSize: "2048000", //分块大小
         duplicate: true,
         headers: {
@@ -163,13 +164,13 @@ export default {
           fileSize: file.size,
           fileUrl: data.data
         });
-      }else if(data.code == 4405){
-          Message.error(data.message || this.errorMess);
-          window.location.href = "#/"
+      } else if (data.code == 4405) {
+        Message.error(data.message || this.errorMess);
+        window.location.href = "#/"
       }
 
       if (data.data.isMerge) {
-          let type = this.uploadType=='1'?'2':'0';
+        let type = this.uploadType == '1' ? '2' : '0';
         api
           .post("sys/merge", {
             ftpCode: this.ftpCode.toString(),
@@ -219,12 +220,12 @@ export default {
         file.ignored = true;
       } else if (this.uploadType == 1) {
         // let formet = ['.asx', '.asf', '.mpg', '.wmv', '.3gp', '.mp4', '.mov', '.avi', '.flv','.mp3','.wav','.mpeg'];
-        let formet = ['.ogg','.mp3','.wma','.midi','.wav','.ob','.mpg', '.mpeg','.mp4','.3gp','.mov','.rm', '.rmvb','.wmv','.asf','.avi','.asx','.txt','.jpg','.png','.tga']
+        let formet = ['.ogg', '.mp3', '.wma', '.midi', '.wav', '.ob', '.mpg', '.mpeg', '.mp4', '.3gp', '.mov', '.rm', '.rmvb', '.wmv', '.asf', '.avi', '.asx', '.txt', '.jpg', '.png', '.tga']
         if (!formet.includes(file.name.substring(file.name.lastIndexOf('.')).toLocaleLowerCase())) {
           this.$message.error("请上传视频或音频文件");
           file.ignored = true;
         }
-      }else {
+      } else {
         this.options.query.ftpCode = this.ftpCode.toString();
       }
       this.options.query.userId = this.storage("userinfo").id;
