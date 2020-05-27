@@ -46,7 +46,7 @@
                 <i v-else class="icon iconfont fs-28 fc-999" :class="onFileType(item.fileName)"></i>
               </td>
               <td>{{item.fileName}}</td>
-              <td>{{item.createDate | date('YYYY-MM-DD hh:mm:ss')}}</td>
+              <td>{{item.createDate}}</td>
               <td>{{item.fileSize | fileSize}}</td>
               <td>{{item.isUploadSucess=='0'?'上传中':(item.isUploadSucess=='1'?'成功':'失败')}}</td>
               <td v-if="query.role==1" class="w-150">

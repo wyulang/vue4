@@ -25,7 +25,7 @@
                     <div class="flex-1 ml10">
                         <span :class="{'iconfile1':data.file,'iconwenjianjia fc-fc6':!data.file}" class="iconfont"></span>
                         <span class="pl10">{{data.fileName}}</span>
-                        <span class="pl30 fc-999" v-if="data.createTime">{{data.createTime |date('YYYY-MM-DD')}}</span>
+                        <span class="pl30 fc-999" v-if="data.createTime">{{data.createTime }}</span>
                         <span class="ml30 fc-999" v-if="data.fileSize">{{data.fileSize | fileSize}}</span>
                     </div>
                     <div class="flex">

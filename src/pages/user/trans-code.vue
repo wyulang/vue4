@@ -33,7 +33,7 @@
               <td>{{item.taskStatus=='1'?'成功':(item.taskStatus=='2'?'失败':(item.taskStatus=='3'?'暂不支持转码':'进行中'))}}</td>
               <!--<td>{{item.taskEfficiency}}</td>-->
               <td>{{item.fileSize | fileSize}}</td>
-              <td>{{item.createDate| date('YYYY-MM-DD hh:mm:ss')}}</td>
+              <td>{{item.createDate}}</td>
               <td class="w-150">
                 <div @click="deleteFiles(item)" class="flex-line active ai-c hand mr10">
                   <span class="iconfont fs-14 mr2 iconshanchu hand "></span>
