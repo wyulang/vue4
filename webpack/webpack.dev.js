@@ -20,8 +20,8 @@ let webpackDevConfig = {
     port: config.port,
     host: config.host,
     historyApiFallback: {
-			index: '/index.html' //与output的publicPath有关(HTMLplugin生成的html默认为index.html)
-		}
+      index: '/index.html' //与output的publicPath有关(HTMLplugin生成的html默认为index.html)
+    }
   },
   plugins: [
     new webpack.NamedModulesPlugin(),
@@ -31,7 +31,7 @@ let webpackDevConfig = {
         messages: [
           chalk.cyan.bold('Your application is running here: ') + chalk.greenBright.bold(`http://${config.devServer}:${config.port}/`),
           chalk.cyan.bold('Your application is running here: ') + chalk.greenBright.bold(`http://localhost:${config.port}/`)
-      ]
+        ]
       }
     }),
     new ProgressBarPlugin(
