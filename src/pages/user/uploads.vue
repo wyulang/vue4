@@ -12,7 +12,7 @@
         <div @click="isCodeUpload" style="height:450px;">
           <uploader @file-success="onFileSuccess" :file-status-text="statusText" @file-added="onFileAdded" ref="uploader" :options="options" class="flex fd-c w-all h-all mt10 pl10 pr10 uploads">
             <uploader-drop style="border: 1px dashed #d9d9d9;" class="br-5 flex jc-c c-aaa fd-c hand mb10 pb10">
-              <uploader-btn class="flexupload" style="border:0;">
+              <uploader-btn class="flexupload" style="border:0;" :attrs="attrs">
                 <div class="flex jc-c">
                   <i style="font-size:60px;" class="iconfont iconicon--"></i>
                 </div>
@@ -69,7 +69,7 @@ export default {
       options: {
         target: "", // 目标上传 URL
         chunked: true,
-        singleFile: true,
+        singleFile: false,
         chunkSize: "2048000", //分块大小
         duplicate: true,
         headers: {
@@ -91,6 +91,10 @@ export default {
           }
           return (objMessage.uploaded || []).indexOf(chunk.offset + 1) >= 0;
         }
+      },
+      attrs: {
+        // 接受的文件类型，形如['.png', '.jpg', '.jpeg', '.gif', '.bmp'...] 这里我封装了一下
+        accept:'*'
       },
       ftplist: []
     };
@@ -176,7 +180,7 @@ export default {
             ftpCode: this.ftpCode.toString(),
             fileName: file.name,
             userId: this.storage("userinfo").id,
-            guid: data.data.guid,
+            identifier: data.data.identifier,
             type: type
           })
           .then(res => {
@@ -221,6 +225,7 @@ export default {
       } else if (this.uploadType == 1) {
         // let formet = ['.asx', '.asf', '.mpg', '.wmv', '.3gp', '.mp4', '.mov', '.avi', '.flv','.mp3','.wav','.mpeg'];
         let formet = ['.ogg', '.mp3', '.wma', '.midi', '.wav', '.ob', '.mpg', '.mpeg', '.mp4', '.3gp', '.mov', '.rm', '.rmvb', '.wmv', '.asf', '.avi', '.asx', '.txt', '.jpg', '.png', '.tga']
+        this.attrs.accept = formet;
         if (!formet.includes(file.name.substring(file.name.lastIndexOf('.')).toLocaleLowerCase())) {
           this.$message.error("请上传视频或音频文件");
           file.ignored = true;
@@ -234,7 +239,11 @@ export default {
   },
   created() {
     this.options.target = api.getDomainApi() + this.baseUrl;
-    this.initData();
+    if(this.uploadType == 1){
+      this.attrs.accept = ['.ogg', '.mp3', '.wma', '.midi', '.wav', '.vob', '.mpg', '.mpeg', '.mp4', '.3gp', '.mov', '.rm', '.rmvb', '.wmv', '.asf', '.avi', '.asx', '.txt', '.jpg', '.png', '.tga']
+    }else {
+      this.initData();
+    }
   }
 };
 </script>
