@@ -19,7 +19,7 @@
     "amfe-flexible": "^2.2.1",
     "assets-webpack-plugin": "^3.9.10",
     "autoprefixer": "^9.6.5",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "babel-loader": "^8.0.6",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "chalk": "^2.4.2",
