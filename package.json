@@ -34,7 +34,7 @@
     "friendly-errors-webpack-plugin": "^1.7.0",
     "fs-extra": "^8.1.0",
     "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^5.5.0",
     "inobounce": "^0.2.0",
     "inquirer": "^7.0.0",
     "less": "^3.10.3",
